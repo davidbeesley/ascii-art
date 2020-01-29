@@ -25,7 +25,7 @@ The main algorithms are
 
 ## Usage
 ``` 
-$ java -jar release/ascii-art.jar -h
+java -jar release/ascii-art.jar -h
 Usage: AsciiArt [-hV] [--bold] [--invert] [--italic] -a=<alg> [--angle=<ANGLE>]
                 [-b=<border>] [--bgc=<COLOR>] [-e=<outputType>] [-f=<FONT>]
                 [--fgc=<COLOR>] [-i=<FILE>] [--logging=<logLevel>] [-m=<COLOR>]
@@ -33,27 +33,27 @@ Usage: AsciiArt [-hV] [--bold] [--invert] [--italic] -a=<alg> [--angle=<ANGLE>]
 Ascii Art generator
   -a, --algorithm=<alg>      Valid values: CONSOLE, FONTS, PIXELSWAP, SAMPLE,
                                SILO, DIM
-      --angle=<ANGLE>        matching angle
-  -b, --border=<border>      border width
-      --bgc=<COLOR>          background color
-      --bold                 make font bold
+      --angle=<ANGLE>        Matching angle
+  -b, --border=<border>      Border width
+      --bgc=<COLOR>          Background color
+      --bold                 Make font bold
   -e, --ext=<outputType>     Output format. Valid values: JPG, PNG
-  -f, --font=<FONT>          font
-      --fgc=<COLOR>          foreground color
+  -f, --font=<FONT>          Font
+      --fgc=<COLOR>          Foreground color
   -h, --help                 Show this help message and exit.
-  -i, --image=<FILE>         source image
-      --invert               inverts image (i.e. black to white or character
-                               large to small
-      --italic               make font italic
+  -i, --image=<FILE>         Source image
+      --invert               Inverts image (silo) or characters matching
+                               (console, pixelswap).
+      --italic               Make font italic
       --logging=<logLevel>   Valid values: TRACE, DEBUG, INFO, WARNING, ERROR,
                                NONE
-  -m, --matcher=<COLOR>      silhouette color to match
-  -o, --out=<FILE>           output filename
-  -s, --size=<SIZE>          font size
-  -t, --text=<FILE>          source text
+  -m, --matcher=<COLOR>      Silhouette color to match
+  -o, --out=<FILE>           Output filename
+  -s, --size=<SIZE>          Font size
+  -t, --text=<FILE>          Source text
   -V, --version              Print version information and exit.
-  -x, --dx=<dx>              desired output dimension x
-  -y, --dy=<dy>              desired output dimension y
+  -x, --dx=<dx>              Desired output dimension x
+  -y, --dy=<dy>              Desired output dimension y
 
 ```
 
@@ -110,5 +110,11 @@ java -jar release/ascii-art.jar -a sample -i examples/images/littleprince.png -m
 ### Fonts
 Prints out the list of fonts found on the system that can be used with the --font option.
 ``` bash
-java -jar release/ascii-art.jar -a FONTS
+java -jar release/ascii-art.jar -a fonts
+```
+
+### Color
+Prints out the list of possible colors that can be used with the --bgc --fbg -m arguments.
+``` bash
+java -jar release/ascii-art.jar -a color
 ```

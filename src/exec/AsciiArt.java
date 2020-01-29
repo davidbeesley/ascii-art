@@ -29,7 +29,7 @@ import java.util.concurrent.Callable;
 @Command(description = "Ascii Art generator", name = "AsciiArt", mixinStandardHelpOptions = true, version = "AsciiArt 1.0")
 public class AsciiArt implements Callable<Integer> {
 
-    private enum Algorithm{CONSOLE, FONTS, PIXELSWAP, SAMPLE, SILO, DIM}
+    private enum Algorithm{CONSOLE, FONTS, PIXELSWAP, SAMPLE, SILO, DIM, COLOR}
 
     private enum OutputType{JPG, PNG;}
 
@@ -58,15 +58,15 @@ public class AsciiArt implements Callable<Integer> {
 
     @Option(names = {"-b", "--border"}, description = "Border width") int border = 30;
 
-    @Option(names = {"--bgc"}, description = "Background color. Valid values: ${COMPLETION-CANDIDATES}", paramLabel = "<COLOR>")
+    @Option(names = {"--bgc"}, description = "Background color.", paramLabel = "<COLOR>")
     WebColor backgroundWebColor = WebColor.White;
     Color backgroundColor;
 
-    @Option(names = {"--fgc"}, description = "Foreground color. Valid values: ${COMPLETION-CANDIDATES}", paramLabel = "<COLOR>")
+    @Option(names = {"--fgc"}, description = "Foreground color.", paramLabel = "<COLOR>")
     WebColor foregroundWebColor = WebColor.Black;
     Color foregroundColor;
 
-    @Option(names = {"-m", "--matcher"}, description = "Silhouette color to match. Valid values: ${COMPLETION-CANDIDATES}", paramLabel = "<COLOR>")
+    @Option(names = {"-m", "--matcher"}, description = "Silhouette color to match.", paramLabel = "<COLOR>")
     WebColor matcherWebColor= WebColor.Black;
     Color matcherColor;
 
@@ -185,6 +185,9 @@ public class AsciiArt implements Callable<Integer> {
                     return 0;
                 }
                 dim();
+                break;
+            case COLOR:
+                color();
                 break;
         }
 
@@ -318,6 +321,11 @@ public class AsciiArt implements Callable<Integer> {
         System.out.println("dx: " + dim.getWidth() + "\tdy: " + dim.getHeight());
     }
 
+    private void color(){
+        for (WebColor c: WebColor.values()){
+            System.out.println(c);
+        }
+    }
 
 
 }
