@@ -45,7 +45,7 @@ public class AsciiArt implements Callable<Integer> {
     @Option(names = {"-i", "--image"}, description = "source image", paramLabel = "<FILE>")
     File imageFile;
 
-    @Option(names = {"-o", "--out"}, description = "output filename (no ext please)", paramLabel = "<FILE>")
+    @Option(names = {"-o", "--out"}, description = "output filename", paramLabel = "<FILE>")
     File outFile;
 
     @Option(names = {"-t", "--text"}, description = "source text", paramLabel = "<FILE>")
