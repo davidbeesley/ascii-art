@@ -65,18 +65,13 @@ Requires an input image and text file. Outputs an image.
 
 #### Light Prince
 ``` bash
-$ java -jar release/ascii-art.jar -a silo -i examples/images/littleprince.png -t examples/texts/littleprince.txt --bgc white --fgc black -o examples/lightprince.png 
-Beginning mapping. Please be patient.
-
-Image printed to: examples/lightprince.png
+java -jar release/ascii-art.jar -a silo -i examples/images/littleprince.png -t examples/texts/littleprince.txt --bgc white --fgc black -o examples/lightprince.png 
 ```
 
 #### Dark Prince
 ``` bash
-$ java -jar release/ascii-art.jar -a silo -i examples/images/littleprince.png -t examples/texts/littleprince.txt --bgc black --fgc white -o examples/darkprince.png --invert
-Beginning mapping. Please be patient.
+java -jar release/ascii-art.jar -a silo -i examples/images/littleprince.png -t examples/texts/littleprince.txt --bgc black --fgc white -o examples/darkprince.png --invert
 
-Image printed to: examples/darkprince.png
 ```
 
 
@@ -84,8 +79,7 @@ Image printed to: examples/darkprince.png
 Creates a true colored ascii pixelated version of an image.
 Requires an input image. Outputs an image.
 ``` bash
-$ java -jar release/ascii-art.jar -a pixelswap -i examples/images/building.jpg -o examples/pixelswap.png 
-Image printed to: examples/building.png
+java -jar release/ascii-art.jar -a pixelswap -i examples/images/building.jpg -o examples/pixelswap.png 
 ```
 
 ### Console
@@ -103,8 +97,7 @@ Prints the ascii aspect ratio of the original image.
 Requires an input image.
 You can also specify a desired font to get the aspect ratio in that font.
 ``` bash
-$ java -jar release/ascii-art.jar -a dim -i examples/images/building.jpg 
-dx: 283	dy: 87
+java -jar release/ascii-art.jar -a dim -i examples/images/building.jpg 
 ```
 
 
