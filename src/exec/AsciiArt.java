@@ -28,7 +28,7 @@ import java.util.concurrent.Callable;
 @Command(description = "Ascii Art generator", name = "AsciiArt", mixinStandardHelpOptions = true, version = "AsciiArt 1.0")
 public class AsciiArt implements Callable<Integer> {
 
-    private enum Algorithm{CONSOLE, FONTS, PIXELSWAP, SAMPLE, SILO}
+    private enum Algorithm{CONSOLE, FONTS, PIXELSWAP, SAMPLE, SILO, DIM}
 
     private enum OutputType{JPG, PNG;}
 
@@ -51,8 +51,8 @@ public class AsciiArt implements Callable<Integer> {
     @Option(names = {"-t", "--text"}, description = "source text", paramLabel = "<FILE>")
     File textFile;
 
-    @Option(names = {"--dx"}, description = "desired output dimension x") int dx = -1;
-    @Option(names = {"--dy"}, description = "desired output dimension y") int dy = -1;
+    @Option(names = {"-x","--dx"}, description = "desired output dimension x") int dx = -1;
+    @Option(names = {"-y", "--dy"}, description = "desired output dimension y") int dy = -1;
     Dimension dim;
 
     @Option(names = {"-b", "--border"}, description = "border width") int border = 30;
@@ -96,7 +96,7 @@ public class AsciiArt implements Callable<Integer> {
         Logger.setLogLevel(logLevel);
         // Build Dimension
         if (dx != -1 && dy != -1){
-            dim = new Dimension(dx, dy);
+            dim = new Dimension(dy, dx);
         } else if (dx != -1 || dy != -1){
             Logger.warning("Both -dx and -dy must be specified to supply an output dimension");
             return 0;
@@ -142,7 +142,7 @@ public class AsciiArt implements Callable<Integer> {
         }
 
         // output file
-        if (outFile == null){
+        if (outFile == null && (alg == Algorithm.PIXELSWAP || alg == Algorithm.SILO )){
             outFile =  new File(Util.stripExtension(imageFile.getName()) + "." + outputExtension);
         }
         switch (alg){
@@ -182,6 +182,13 @@ public class AsciiArt implements Callable<Integer> {
                     return 0;
                 }
                 silo();
+                break;
+            case DIM:
+                if (imageFile == null){
+                    System.out.println("dim requires option '--image=<FILE>'");
+                    return 0;
+                }
+                dim();
                 break;
         }
 
@@ -307,6 +314,12 @@ public class AsciiArt implements Callable<Integer> {
             Logger.warning("Color " + colorString + " not found.");
             throw e;
         }
+    }
+
+    private void dim(){
+        BufferedImage source = Util.readImage(imageFile);
+        dim = Canvas.getRecommendedDimension(source);
+        System.out.println("dx: " + dim.getWidth() + "\tdy: " + dim.getHeight());
     }
 
 
