@@ -1,7 +1,7 @@
 # ascii-art
 A set of tools for creating ascii art from existing images and text files.
 
-The main alogrithms are 
+The main algorithms are 
 - silo: The flagship feature. Map a text file to a silhouette.
 - console: Print an ANSI colored ascii representation of an image to the console.
 - pixelswap: Create a true colored ascii pixelated version of an image.
