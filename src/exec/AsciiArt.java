@@ -4,6 +4,7 @@ import art.BooleanCanvas;
 import art.Canvas;
 import logger.LogLevel;
 import logger.Logger;
+import org.eoti.awt.WebColor;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 import provider.CharSetProvider;
@@ -57,13 +58,16 @@ public class AsciiArt implements Callable<Integer> {
 
     @Option(names = {"-b", "--border"}, description = "Border width") int border = 30;
 
-    @Option(names = {"--bgc"}, description = "Background color", paramLabel = "<COLOR>") String backgroundColorString = "WHITE";
+    @Option(names = {"--bgc"}, description = "Background color. Valid values: ${COMPLETION-CANDIDATES}", paramLabel = "<COLOR>")
+    WebColor backgroundWebColor = WebColor.White;
     Color backgroundColor;
 
-    @Option(names = {"--fgc"}, description = "Foreground color", paramLabel = "<COLOR>") String foregroundColorString = "BLACK";
+    @Option(names = {"--fgc"}, description = "Foreground color. Valid values: ${COMPLETION-CANDIDATES}", paramLabel = "<COLOR>")
+    WebColor foregroundWebColor = WebColor.Black;
     Color foregroundColor;
 
-    @Option(names = {"-m", "--matcher"}, description = "Silhouette color to match", paramLabel = "<COLOR>") String matcherColorString = "BLACK";
+    @Option(names = {"-m", "--matcher"}, description = "Silhouette color to match. Valid values: ${COMPLETION-CANDIDATES}", paramLabel = "<COLOR>")
+    WebColor matcherWebColor= WebColor.Black;
     Color matcherColor;
 
     @Option(names = {"--angle"}, description = "Matching angle", paramLabel = "<ANGLE>")
@@ -106,20 +110,12 @@ public class AsciiArt implements Callable<Integer> {
 
 
         // Colors
-        Color color;
-        try {
-            backgroundColor = parseColor(backgroundColorString);
-            Logger.info("Background color set to " + backgroundColorString);
-            foregroundColor = parseColor(foregroundColorString);
-            Logger.info("Foreground color set to " + foregroundColorString);
-            matcherColor = parseColor(matcherColorString);
-            Logger.info("matcher color set to " + matcherColorString);
+            backgroundColor = backgroundWebColor.getColor();
+            foregroundColor = foregroundWebColor.getColor();
+            matcherColor = matcherWebColor.getColor();
 
 
 
-        } catch (Exception e) {
-            return 0;
-        }
 
         int fontType = Font.PLAIN;
         if (bold && italic){
