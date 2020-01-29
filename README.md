@@ -9,7 +9,7 @@ The main algorithms are
 
 
 ## Usage
-``` bash
+``` 
 $ java -jar release/ascii-art.jar -h
 Usage: AsciiArt [-hV] [--bold] [--invert] [--italic] -a=<alg> [--angle=<ANGLE>]
                 [-b=<border>] [--bgc=<COLOR>] [-e=<outputType>] [-f=<FONT>]
