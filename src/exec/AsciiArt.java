@@ -1,6 +1,7 @@
 package exec;
 
 import art.Canvas;
+import logger.LogLevel;
 import logger.Logger;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
@@ -15,19 +16,54 @@ import util.Util;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.reflect.Field;
+import java.rmi.server.ExportException;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
 @Command(description = "Ascii Art generator", name = "AsciiArt", mixinStandardHelpOptions = true, version = "AsciiArt 1.0")
 public class AsciiArt implements Callable<Integer> {
 
+    private enum Algorithm{FONTS, PIXELSWAP;}
+
+
+    @Option(names = {"-a", "--algorithm"}, required = true, description = "Valid values: ${COMPLETION-CANDIDATES}")
+    Algorithm alg;
+
+
 
     @Option(names = {"-i", "--image"}, required = true, description = "source image", paramLabel = "<FILE>")
     File imageFile;
 
-    @Option(names = {"-dx", "--dimensionX"}, description = "desired output dimension x") int dx = -1;
-    @Option(names = {"-dy", "--dimensionY"}, description = "desired output dimension y") int dy = -1;
+    @Option(names = {"--dx"}, description = "desired output dimension x") int dx = -1;
+    @Option(names = {"--dy"}, description = "desired output dimension y") int dy = -1;
+    Dimension dim;
 
+    @Option(names = {"-b", "--border"}, description = "border width") int border = 30;
+
+    @Option(names = {"--bgc"}, description = "background color", paramLabel = "<COLOR>") String backgroundColorString = "WHITE";
+    Color backgroundColor;
+
+    @Option(names = {"--fgc"}, description = "foreground color", paramLabel = "<COLOR>") String foregroundColorString = "BLACK";
+    Color foregroundColor;
+
+    @Option(names = {"--invert"}, description = "inverts image (i.e. black to white or character large to small")
+    boolean invert = false;
+
+    @Option(names = {"-f", "--font"}, description = "font", paramLabel = "<FONT>") String fontString = Font.MONOSPACED;
+    Font font;
+
+    @Option(names = {"-s", "--size"}, description = "font size", paramLabel = "<SIZE>")
+    int fontSize = 12;
+
+    @Option(names = {"--logging"},  description = "Valid values: ${COMPLETION-CANDIDATES}")
+    LogLevel logLevel = LogLevel.WARNING;
+
+    @Option(names = {"--bold"}, description = "make font bold")
+    boolean bold = false;
+
+    @Option(names = {"--italic"}, description = "make font italic")
+    boolean italic = false;
 
 
 
@@ -35,7 +71,8 @@ public class AsciiArt implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        Dimension dim = null;
+        Logger.setLogLevel(logLevel);
+        // Build Dimension
         if (dx != -1 && dy != -1){
             dim = new Dimension(dx, dy);
         } else if (dx != -1 || dy != -1){
@@ -43,36 +80,79 @@ public class AsciiArt implements Callable<Integer> {
             return 0;
         }
 
-        process(imageFile, Color.DARK_GRAY, false);
+
+        // Colors
+        Color color;
+        try {
+            backgroundColor = parseColor(backgroundColorString);
+            Logger.info("Background color set to " + backgroundColorString);
+            foregroundColor = parseColor(foregroundColorString);
+            Logger.info("Foreground color set to " + foregroundColorString);
+
+        } catch (Exception e) {
+            return 0;
+        }
+
+        int fontType = Font.PLAIN;
+        if (bold && italic){
+            fontType = Font.BOLD + Font.ITALIC;
+        } else if (bold){
+            fontType = Font.BOLD;
+        } else if (italic){
+            fontType = Font.ITALIC;
+        }
+        // Font
+        font =  new Font(fontString, fontType, fontSize);
+
+        switch (alg){
+            case PIXELSWAP:
+                pixelswap();
+                break;
+            case FONTS:
+                break;
+
+        }
         return 0; // exit code
     }
 
 
     public static void main(String... args) { // bootstrap the application
-        System.exit(new CommandLine(new AsciiArt()).execute(args));
+        System.exit(new CommandLine(new AsciiArt()).setCaseInsensitiveEnumValuesAllowed(true).execute(args));
     }
 
-    public void process(File imageFile, Color background, Dimension dim, boolean invert){
+    private void pixelswap(){
         BufferedImage source = Util.readImage(imageFile);
         if (dim == null){
             dim = art.Canvas.getRecommendedDimension(source);
         }
-        Logger.info(dim.getHeight()+ " " + dim.getWidth());
-        art.Canvas canvas = new Canvas(source, 200,300);
-        canvas.addBorder(30);
+        Logger.info("Using height and width: " + dim.getHeight()+ " " + dim.getWidth());
+        art.Canvas canvas = new Canvas(source, dim);
+        canvas.addBorder(border);
 
         Set<Character> charSet = CharSetProvider.getLargeSet();
-        Font font =  new Font("Liberation Mono", Font.PLAIN, 18);
-        ICharProvider charProvider = new WhitespaceRanked(font, charSet);
+        ICharProvider charProvider = new WhitespaceRanked(font, charSet, invert);
         PixelProvider pixelProvider = new PixelProvider(font, charSet);
-        charProvider.invert(invert);
 
 
         canvas.setCharProvider(charProvider);
         canvas.setColorProvider(new ColorProvider());
-        canvas.setBackground(background);
+        canvas.setBackground(backgroundColor);
         BufferedImage image = canvas.generateASCII(pixelProvider);
-        Util.writeImage(image,  Util.stripExtension(imageFile.getName()));
+        Util.writeImagePNG(image,  Util.stripExtension(imageFile.getName()));
     }
 
+    private Color parseColor(String colorString) throws Exception {
+        try {
+            Field field = Class.forName("java.awt.Color").getField(backgroundColorString);
+            return (Color) field.get(null);
+        } catch (Exception e) {
+            Logger.warning("Color " + backgroundColorString + " not found.");
+            throw e;
+        }
+    }
+
+
+
 }
+
+

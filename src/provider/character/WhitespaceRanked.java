@@ -1,6 +1,7 @@
 package provider.character;
 
 import art.Pixel;
+import logger.Logger;
 import provider.CharSetProvider;
 import provider.pixel.PixelProvider;
 
@@ -57,7 +58,6 @@ public class WhitespaceRanked extends CharProvider {
             charMap.put(getUsed(pixel), c);
 
         }
-        //System.out.println(charMap);
         rankedChars = new ArrayList<>(charMap.values());
     }
 
@@ -68,9 +68,11 @@ public class WhitespaceRanked extends CharProvider {
         double maxScore = 255 * 3;
         double arraySize = rankedChars.size();
         double scaled = score / maxScore * arraySize;
+        //Logger.info(arraySize + " ");
         int index = (int) Math.round(scaled);
         if (index < 0 ) index = 0;
         if (index >= rankedChars.size()) index = rankedChars.size() -1;
+        //Logger.info(score + " " + scaled + " " +index + " " + rankedChars.get(index));
         return rankedChars.get(index);
     }
 

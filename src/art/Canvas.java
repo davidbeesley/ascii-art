@@ -21,8 +21,8 @@ public class Canvas {
     private Color background = new Color(0,0,0,0);
     private ICharProvider charProvider;
     private IColorProvider colorProvider;
-    private Color borderColor = Color.WHITE;
-    public static final double SCALE = .75;
+    private Color borderColor = Color.WHITE; // todo
+    public static double SCALE = .9; // TODO?
 
     public Canvas(BufferedImage image){
 
@@ -155,6 +155,7 @@ public class Canvas {
 
                 Color average = averages[h][w];
                 points[h][w] = new Point(colorProvider.getColor(average, h, w), colorProvider.getBackground(average, background, h, w), charProvider.getChar(average, h, w));
+                Logger.info(points[h][w].backgroundColor + "");
             }
         }
         return points;

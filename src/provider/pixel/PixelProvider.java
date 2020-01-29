@@ -94,8 +94,8 @@ public class PixelProvider {
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
 
-        g2d.setColor(TRANSPARENT);
-        //g2d.fillRect(0,0, pixelWidth, pixelHeight);
+        g2d.setColor(background); //TRANSPARENT
+        g2d.fillRect(0,0, pixelWidth, pixelHeight); // THIS WAS COMMENTED OUT
         g2d.setColor(color);
         if (font.canDisplay(c) == false){
             c = ' ';
