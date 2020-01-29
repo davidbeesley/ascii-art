@@ -18,7 +18,7 @@ The main algorithms are
 
 
 ### PixelSwap
-![](examples/building.png?raw=true)
+![](examples/pixelswap.png?raw=true)
 
 ### Console
 ![](examples/console.png?raw=true)
@@ -84,7 +84,7 @@ Image printed to: examples/darkprince.png
 Creates a true colored ascii pixelated version of an image.
 Requires an input image. Outputs an image.
 ``` bash
-$ java -jar release/ascii-art.jar -a pixelswap -i examples/images/building.jpg -o examples/building.png 
+$ java -jar release/ascii-art.jar -a pixelswap -i examples/images/building.jpg -o examples/pixelswap.png 
 Image printed to: examples/building.png
 ```
 
