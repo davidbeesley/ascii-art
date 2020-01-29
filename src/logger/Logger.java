@@ -37,6 +37,17 @@ public class Logger {
         return true;
     }
 
+    protected static boolean outputNoTrace(LogLevel logLevel, String message){
+
+        if (Logger.logLevel.shouldNotOutput(logLevel))return false;
+        if (logLevel == LogLevel.NONE) return false;
+        System.out.println(message);
+        System.out.println();
+
+        return true;
+    }
+
+
     /**
      * Set the global logging level.
      * @param logLevel
@@ -57,6 +68,9 @@ public class Logger {
     public static void info(String message){
         output(LogLevel.INFO, message);
 
+    }
+    public static void message(String message){
+        outputNoTrace(LogLevel.INFO, message);
     }
     public static void warning(String message){
         output(LogLevel.WARNING, message);

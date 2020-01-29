@@ -9,6 +9,7 @@ import provider.CharSetProvider;
 import provider.character.ICharProvider;
 import provider.character.WhitespaceRanked;
 import provider.color.ColorProvider;
+import provider.font.FontProvider;
 import provider.pixel.PixelProvider;
 import util.Dimension;
 import util.Util;
@@ -24,15 +25,21 @@ import java.util.concurrent.Callable;
 @Command(description = "Ascii Art generator", name = "AsciiArt", mixinStandardHelpOptions = true, version = "AsciiArt 1.0")
 public class AsciiArt implements Callable<Integer> {
 
-    private enum Algorithm{FONTS, PIXELSWAP;}
+    private enum Algorithm{CONSOLE, FONTS, PIXELSWAP;}
+
+    private enum OutputType{JPG, PNG;}
 
 
     @Option(names = {"-a", "--algorithm"}, required = true, description = "Valid values: ${COMPLETION-CANDIDATES}")
     Algorithm alg;
 
+    @Option(names = {"-t", "--type"}, description = "Output format. Valid values: ${COMPLETION-CANDIDATES}")
+    OutputType outputType = OutputType.PNG;
+    String outputExtension;
 
 
-    @Option(names = {"-i", "--image"}, required = true, description = "source image", paramLabel = "<FILE>")
+
+    @Option(names = {"-i", "--image"}, description = "source image", paramLabel = "<FILE>")
     File imageFile;
 
     @Option(names = {"--dx"}, description = "desired output dimension x") int dx = -1;
@@ -104,14 +111,31 @@ public class AsciiArt implements Callable<Integer> {
         // Font
         font =  new Font(fontString, fontType, fontSize);
 
+        switch (outputType){
+            case PNG:
+                outputExtension = "png";
+                break;
+            case JPG:
+                outputExtension = "jpg";
+                break;
+        }
         switch (alg){
             case PIXELSWAP:
+                if (imageFile == null){
+                    System.out.println("pixelswap requires option '--image=<FILE>'");
+                    return 0;
+                }
                 pixelswap();
                 break;
             case FONTS:
+                FontProvider.printFonts();
                 break;
-
+            case CONSOLE:
+                console();
+                break;
         }
+
+
         return 0; // exit code
     }
 
@@ -138,9 +162,34 @@ public class AsciiArt implements Callable<Integer> {
         canvas.setColorProvider(new ColorProvider());
         canvas.setBackground(backgroundColor);
         BufferedImage image = canvas.generateASCII(pixelProvider);
-        Util.writeImagePNG(image,  Util.stripExtension(imageFile.getName()));
+        Util.writeImage(image,  Util.stripExtension(imageFile.getName()), outputExtension);
     }
 
+    private void console(){
+        BufferedImage source = Util.readImage(imageFile);
+        if (dim == null){
+            Dimension dim1 = art.Canvas.getRecommendedDimension(source);
+            int h = dim1.getHeight();
+            int w = dim1.getWidth();
+            while(h > 30 || w > 60){
+                h = (int) (h*.9);
+                w = (int) (w*.9);
+            }
+            dim = new Dimension(h,w);
+        }
+        Logger.info("Using height and width: " + dim.getHeight()+ " " + dim.getWidth());
+        art.Canvas canvas = new Canvas(source, dim);
+        canvas.addBorder(border);
+
+        Set<Character> charSet = CharSetProvider.getLargeSet();
+        ICharProvider charProvider = new WhitespaceRanked(font, charSet, invert);
+        PixelProvider pixelProvider = new PixelProvider(font, charSet);
+
+
+        canvas.setCharProvider(charProvider);
+        canvas.setColorProvider(new ColorProvider());
+        canvas.printToConsole();
+    }
     private Color parseColor(String colorString) throws Exception {
         try {
             Field field = Class.forName("java.awt.Color").getField(backgroundColorString);

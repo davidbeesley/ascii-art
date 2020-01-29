@@ -3,6 +3,7 @@ package art;
 import logger.Logger;
 import provider.character.CharProvider;
 import provider.character.ICharProvider;
+import provider.color.AsciiColorProvider;
 import provider.color.ColorProvider;
 import provider.color.IColorProvider;
 import provider.pixel.PixelProvider;
@@ -63,6 +64,18 @@ public class Canvas {
 
     }
 
+    public void printToConsole(){
+        AsciiColorProvider cp = new AsciiColorProvider();
+        Point[][] points = processImage();
+        for (int i = 0; i < points.length; i++){
+            for (int j = 0; j < points[0].length; j++){
+                Point p = points[i][j];
+                System.out.print(cp.getColor(p.color, p.text));
+            }
+            System.out.println();
+        }
+    }
+
     public void setBackground(Color background) {
         this.background = background;
     }
@@ -86,6 +99,8 @@ public class Canvas {
 
 
     }
+
+
 
 
 

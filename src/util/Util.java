@@ -24,36 +24,22 @@ public class Util {
         return image;
     }
 
-    public static void writeImage(BufferedImage image, String filename) {
-
-        Logger.debug("Printing image to: " + filename + ".jpg");
+    public static void writeImage(BufferedImage image, String filename, String extension) {
+        String filepath = filename + "." + extension;
+        Logger.debug("Printing image to: " + filepath);
         try {
-            if (ImageIO.write(image, "jpg", new File(filename + ".jpg"))== false){
+            if (ImageIO.write(image, extension, new File(filepath))== false){
                 throw new IOException("Failed to print");
             }
-            Logger.trace("Image finished printing");
+            Logger.message("Image printed to: " + filepath);
         } catch (IOException e){
-            Logger.warning("Invalid filename: "+ filename);
+            Logger.warning("Invalid filename: "+ filepath);
             Logger.trace(e.getMessage());
             System.exit(1);
         }
     }
 
 
-    public static void writeImagePNG(BufferedImage image, String filename) {
-
-        Logger.debug("Printing image to: " + filename + ".png");
-        try {
-            if (ImageIO.write(image, "png", new File(filename + ".png"))== false){
-                throw new IOException("Failed to print");
-            }
-            Logger.trace("Image finished printing");
-        } catch (IOException e){
-            Logger.warning("Invalid filename: "+ filename);
-            Logger.trace(e.getMessage());
-            System.exit(1);
-        }
-    }
 
     public static String stripExtension(String filename){
         return filename.substring(0, filename.lastIndexOf('.'));
