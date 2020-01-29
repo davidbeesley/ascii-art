@@ -10,9 +10,12 @@ The main algorithms are
 
 ### Silo
 #### LightPrince
-![](examples/lightprince_small.png?raw=true
+![](examples/lightprince.png?raw=true)
+
+
 #### DarkPrince
-![](examples/darkprince_small.png?raw=true
+![](examples/darkprince.png?raw=true)
+
 
 ### PixelSwap
 ![](examples/building.png?raw=true)
