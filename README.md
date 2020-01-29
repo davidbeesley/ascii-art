@@ -6,7 +6,17 @@ The main algorithms are
 - console: Print an ANSI colored ascii representation of an image to the console.
 - pixelswap: Create a true colored ascii pixelated version of an image.
 
+## Examples
 
+### Silo
+![](examples/lightprince.png?raw=true
+![](examples/darkprince.png?raw=true
+
+### PixelSwap
+![](examples/building.png?raw=true)
+
+### Console
+![](examples/console.png?raw=true)
 
 ## Usage
 ``` 
