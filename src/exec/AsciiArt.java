@@ -42,49 +42,49 @@ public class AsciiArt implements Callable<Integer> {
 
 
 
-    @Option(names = {"-i", "--image"}, description = "source image", paramLabel = "<FILE>")
+    @Option(names = {"-i", "--image"}, description = "Source image", paramLabel = "<FILE>")
     File imageFile;
 
-    @Option(names = {"-o", "--out"}, description = "output filename", paramLabel = "<FILE>")
+    @Option(names = {"-o", "--out"}, description = "Output filename", paramLabel = "<FILE>")
     File outFile;
 
-    @Option(names = {"-t", "--text"}, description = "source text", paramLabel = "<FILE>")
+    @Option(names = {"-t", "--text"}, description = "Source text", paramLabel = "<FILE>")
     File textFile;
 
-    @Option(names = {"-x","--dx"}, description = "desired output dimension x") int dx = -1;
-    @Option(names = {"-y", "--dy"}, description = "desired output dimension y") int dy = -1;
+    @Option(names = {"-x","--dx"}, description = "Desired output dimension x") int dx = -1;
+    @Option(names = {"-y", "--dy"}, description = "Desired output dimension y") int dy = -1;
     Dimension dim;
 
-    @Option(names = {"-b", "--border"}, description = "border width") int border = 30;
+    @Option(names = {"-b", "--border"}, description = "Border width") int border = 30;
 
-    @Option(names = {"--bgc"}, description = "background color", paramLabel = "<COLOR>") String backgroundColorString = "WHITE";
+    @Option(names = {"--bgc"}, description = "Background color", paramLabel = "<COLOR>") String backgroundColorString = "WHITE";
     Color backgroundColor;
 
-    @Option(names = {"--fgc"}, description = "foreground color", paramLabel = "<COLOR>") String foregroundColorString = "BLACK";
+    @Option(names = {"--fgc"}, description = "Foreground color", paramLabel = "<COLOR>") String foregroundColorString = "BLACK";
     Color foregroundColor;
 
-    @Option(names = {"-m", "--matcher"}, description = "silhouette color to match", paramLabel = "<COLOR>") String matcherColorString = "BLACK";
+    @Option(names = {"-m", "--matcher"}, description = "Silhouette color to match", paramLabel = "<COLOR>") String matcherColorString = "BLACK";
     Color matcherColor;
 
-    @Option(names = {"--angle"}, description = "matching angle", paramLabel = "<ANGLE>")
+    @Option(names = {"--angle"}, description = "Matching angle", paramLabel = "<ANGLE>")
     double matchAngle = .5;
 
-    @Option(names = {"--invert"}, description = "inverts image (i.e. black to white or character large to small")
+    @Option(names = {"--invert"}, description = "Inverts image (silo) or characters matching (console, pixelswap).")
     boolean invert = false;
 
-    @Option(names = {"-f", "--font"}, description = "font", paramLabel = "<FONT>") String fontString = Font.MONOSPACED;
+    @Option(names = {"-f", "--font"}, description = "Font", paramLabel = "<FONT>") String fontString = Font.MONOSPACED;
     Font font;
 
-    @Option(names = {"-s", "--size"}, description = "font size", paramLabel = "<SIZE>")
+    @Option(names = {"-s", "--size"}, description = "Font size", paramLabel = "<SIZE>")
     int fontSize = 12;
 
     @Option(names = {"--logging"},  description = "Valid values: ${COMPLETION-CANDIDATES}")
     LogLevel logLevel = LogLevel.WARNING;
 
-    @Option(names = {"--bold"}, description = "make font bold")
+    @Option(names = {"--bold"}, description = "Make font bold")
     boolean bold = false;
 
-    @Option(names = {"--italic"}, description = "make font italic")
+    @Option(names = {"--italic"}, description = "Make font italic")
     boolean italic = false;
 
 
