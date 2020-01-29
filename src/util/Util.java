@@ -11,13 +11,13 @@ import java.util.TreeSet;
 
 public class Util {
 
-    public static BufferedImage readImage(String filename){
+    public static BufferedImage readImage(File filename){
         BufferedImage image = null;
         try {
-             image = ImageIO.read(new File(filename));
+             image = ImageIO.read(filename);
 
         } catch (IOException e){
-            Logger.warning("Invalid filename: "+ filename);
+            Logger.warning("Invalid image: "+ filename.getName());
             Logger.trace(e.getMessage());
             System.exit(1);
         }
