@@ -24,11 +24,15 @@ public class Util {
         return image;
     }
 
-    public static void writeImage(BufferedImage image, String filename, String extension) {
-        String filepath = filename + "." + extension;
+    public static void writeImage(BufferedImage image, File outputFile, String extension) {
+        String filepath = outputFile.getPath();
+        File directory = outputFile.getParentFile();
+        if (directory != null && ! directory.exists()){
+            directory.mkdirs();
+        }
         Logger.debug("Printing image to: " + filepath);
         try {
-            if (ImageIO.write(image, extension, new File(filepath))== false){
+            if (ImageIO.write(image, extension, outputFile)== false){
                 throw new IOException("Failed to print");
             }
             Logger.message("Image printed to: " + filepath);
@@ -43,6 +47,12 @@ public class Util {
 
     public static String stripExtension(String filename){
         return filename.substring(0, filename.lastIndexOf('.'));
+
+
+    }
+
+    public static String getExtension(String filename){
+        return filename.substring(filename.lastIndexOf('.'));
 
 
     }

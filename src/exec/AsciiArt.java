@@ -45,6 +45,9 @@ public class AsciiArt implements Callable<Integer> {
     @Option(names = {"-i", "--image"}, description = "source image", paramLabel = "<FILE>")
     File imageFile;
 
+    @Option(names = {"-o", "--out"}, description = "output filename (no ext please)", paramLabel = "<FILE>")
+    File outFile;
+
     @Option(names = {"-t", "--text"}, description = "source text", paramLabel = "<FILE>")
     File textFile;
 
@@ -100,6 +103,8 @@ public class AsciiArt implements Callable<Integer> {
         }
 
 
+
+
         // Colors
         Color color;
         try {
@@ -136,6 +141,10 @@ public class AsciiArt implements Callable<Integer> {
                 break;
         }
 
+        // output file
+        if (outFile == null){
+            outFile =  new File(Util.stripExtension(imageFile.getName()) + "." + outputExtension);
+        }
         switch (alg){
             case PIXELSWAP:
                 if (imageFile == null){
@@ -203,7 +212,7 @@ public class AsciiArt implements Callable<Integer> {
         canvas.setColorProvider(new ColorProvider());
         canvas.setBackground(backgroundColor);
         BufferedImage image = canvas.generateASCII(pixelProvider);
-        Util.writeImage(image,  Util.stripExtension(imageFile.getName()), outputExtension);
+        Util.writeImage(image, outFile, outputExtension);
     }
 
     private void console(){
@@ -287,7 +296,7 @@ public class AsciiArt implements Callable<Integer> {
         //canvas.printToConsole();
 
         BufferedImage image = canvas.generateASCII(pixelProvider);
-        Util.writeImage(image,  Util.stripExtension(imageFile.getName()), outputExtension);
+        Util.writeImage(image, outFile, outputExtension);
     }
 
     private Color parseColor(String colorString) throws Exception {
