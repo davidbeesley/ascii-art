@@ -79,7 +79,7 @@ java -jar release/ascii-art.jar -a silo -i examples/images/littleprince.png -t e
 Creates a true colored ascii pixelated version of an image.
 Requires an input image. Outputs an image.
 ``` bash
-java -jar release/ascii-art.jar -a pixelswap -i examples/images/building.jpg -o examples/pixelswap.png -bgc dark_grey
+java -jar release/ascii-art.jar -a pixelswap -i examples/images/building.jpg -o examples/pixelswap.png --bgc "DARK_GRAY"
 ```
 
 ### Console
