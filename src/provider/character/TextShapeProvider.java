@@ -16,7 +16,8 @@ public class TextShapeProvider implements  ICharProvider {
 
     private TextManager textManager;
     private Boolean[][] charMap;
-    private static final double density = .95; //.95 succeeded.
+    private static final double START_DENSITY = .96;
+    private double density;
     private Set<Character> characterSet;
     private Queue<Character> nextChars;
 
@@ -24,9 +25,18 @@ public class TextShapeProvider implements  ICharProvider {
         this.textManager = textManager;
         characterSet = textManager.getCharSet();
         nextChars = new LinkedList<>();
-        if (attemptToMap(map, density) == false){
-            Logger.error("Could not map. Try adjusting the density downwards.");
-            System.exit(1);
+        density = START_DENSITY;
+        Logger.message("Beginning mapping. Please be patient.");
+        while (attemptToMap(map, density) == false){
+            if (density < .5){
+                Logger.error("Could not map.");
+                System.exit(1);
+            }
+            else {
+                Logger.info("Attempt with density " + density + " failed. Trying again");
+                density -= .01;
+            }
+
         }
         charMap = map;
         //BooleanCanvas.printMap(map);
@@ -51,10 +61,10 @@ public class TextShapeProvider implements  ICharProvider {
             Logger.error("getBooleanCount failed");
             System.exit(1);
         }
-        while( count * density < chars){
+        while( count * START_DENSITY < chars){
             //Logger.trace("ph: " + pixelHeight + " pw: " + pixelWidth + " count:" + count + " count*density: " + (count * density) + " totalChars: " + chars);
             if (pixelHeight > 120) {
-                double countPerPixel = count * density / (pixelHeight * pixelWidth);
+                double countPerPixel = count * START_DENSITY / (pixelHeight * pixelWidth);
                 Logger.trace(" " + countPerPixel);
                 double totalPixels = chars / countPerPixel;
                 Logger.trace("Total pixels needed:" + totalPixels);
@@ -190,8 +200,8 @@ public class TextShapeProvider implements  ICharProvider {
 
 
         if (textManager.notEmpty()) {
-            Logger.error("MAPPING FAILED");
-            return true;
+            Logger.debug("MAPPING FAILED with density " + density);
+            return false;
         }
         Logger.info("Mapping succeeded");
         return true;

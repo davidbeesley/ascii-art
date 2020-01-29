@@ -170,7 +170,7 @@ public class Canvas {
 
                 Color average = averages[h][w];
                 points[h][w] = new Point(colorProvider.getColor(average, h, w), colorProvider.getBackground(average, background, h, w), charProvider.getChar(average, h, w));
-                Logger.info(points[h][w].backgroundColor + "");
+                //Logger.info(points[h][w].backgroundColor + "");
             }
         }
         return points;

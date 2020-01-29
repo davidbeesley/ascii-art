@@ -14,10 +14,12 @@ public class TextManager {
     private int length = 0;
     private int index = 0;
 
-    public TextManager(String filename){
+    public TextManager(File file){
             words = new ArrayList<>();
-            File file = new File(filename);
             try {
+                if (file == null){
+                    throw new IOException("Invalid text file provided");
+                }
                 Scanner scanner = new Scanner(file);
                 while (scanner.hasNext()){
                     String word = scanner.next();
@@ -26,8 +28,8 @@ public class TextManager {
                 }
             }
             catch (IOException e){
-                Logger.warning("Invalid filename: "+ filename);
-                Logger.trace(e.getMessage());
+                //Logger.warning("Invalid filename: "+ file.getName());
+                Logger.error(e.getMessage());
                 System.exit(1);
             }
 

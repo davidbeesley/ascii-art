@@ -70,7 +70,7 @@ public class Logger {
 
     }
     public static void message(String message){
-        outputNoTrace(LogLevel.INFO, message);
+        outputNoTrace(LogLevel.WARNING, message);
     }
     public static void warning(String message){
         output(LogLevel.WARNING, message);

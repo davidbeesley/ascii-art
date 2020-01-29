@@ -149,7 +149,7 @@ public class BooleanPixelProvider {
 
     public static Set<Double> getSampleAngles(){
         Set<Double> set = new TreeSet<>();
-        for (double d = .0; d < 1.1; d += .1){
+        for (double d = .0; d < 1.1; d += 1.0/16){
             set.add(d);
         }
         return set;

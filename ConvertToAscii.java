@@ -58,7 +58,7 @@ public class ConvertToAscii {
         //convertToAscii.example();
     }
 
-
+// DONE
     public void process(String filename, Color background, boolean invert){
         BufferedImage source = Util.readImage(new File("originals/"+filename));
         Dimension dim = Canvas.getRecommendedDimension(source);
@@ -78,6 +78,8 @@ public class ConvertToAscii {
         BufferedImage image = canvas.generateASCII(pixelProvider);
         Util.writeImage(image, "generated/" + Util.stripExtension(filename));
     }
+
+
 
     public void processText(String filename, String sourceText){
         BufferedImage source = Util.readImage("originals/"+filename);
