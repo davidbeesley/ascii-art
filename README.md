@@ -10,9 +10,9 @@ The main algorithms are
 
 ### Silo
 #### LightPrince
-![](examples/lightprince.png?raw=true
+![](examples/lightprince_small.png?raw=true
 #### DarkPrince
-![](examples/darkprince.png?raw=true
+![](examples/darkprince_small.png?raw=true
 
 ### PixelSwap
 ![](examples/building.png?raw=true)
@@ -70,7 +70,7 @@ Image printed to: examples/lightprince.png
 
 #### Dark Prince
 ``` bash
-$ java -jar release/ascii-art.jar -a silo -i examples/images/littleprince.png -t examples/texts/littleprince.txt --bgc black --fgc white -o examples/darkprince.png 
+$ java -jar release/ascii-art.jar -a silo -i examples/images/littleprince.png -t examples/texts/littleprince.txt --bgc black --fgc white -o examples/darkprince.png --invert
 Beginning mapping. Please be patient.
 
 Image printed to: examples/darkprince.png
