@@ -1,4 +1,4 @@
-package logger;
+package com.github.davidbeesley.asciiart.util.logger;
 
 /**
  * Valid Logger Levels.
@@ -16,10 +16,11 @@ public enum LogLevel {
 
     /**
      * For comparing a message loglevel to the current log level
-     * @param other message loglevel
+     * @param messageLevel message loglevel
      * @return true if the message loglevel is important enough to print.
      */
-    public boolean shouldNotOutput(LogLevel other) {
-        return this.level > other.level;
+    public boolean shouldOutput(LogLevel messageLevel) {
+        if (this.level == NONE.level) return false;
+        return this.level <= messageLevel.level;
     }
 }

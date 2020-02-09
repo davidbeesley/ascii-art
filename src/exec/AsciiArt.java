@@ -2,8 +2,8 @@ package exec;
 
 import art.BooleanCanvas;
 import art.Canvas;
-import logger.LogLevel;
-import logger.Logger;
+import loggerOLD.LogLevel;
+import loggerOLD.Logger;
 import org.eoti.awt.WebColor;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
@@ -14,14 +14,13 @@ import provider.color.SingleColorProvider;
 import provider.font.FontProvider;
 import provider.pixel.BooleanPixelProvider;
 import provider.pixel.PixelProvider;
-import util.Dimension;
+import com.github.davidbeesley.asciiart.util.Dimension;
 import util.Util;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.rmi.server.ExportException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;

@@ -1,7 +1,7 @@
 package provider.character;
 
 import art.Canvas;
-import logger.Logger;
+import loggerOLD.Logger;
 
 import java.awt.*;
 import java.util.Set;

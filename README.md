@@ -3,8 +3,8 @@ A set of tools for creating ascii art from existing images and text files.
 
 The main algorithms are 
 - silo: The flagship feature. Map a text file to a silhouette.
-- console: Print an ANSI colored ascii representation of an image to the console.
-- pixelswap: Create a true colored ascii pixelated version of an image.
+- console: Print an ANSI colored ascii representation of an imageWrapper to the console.
+- pixelswap: Create a true colored ascii pixelated version of an imageWrapper.
 
 ## Examples
 
@@ -41,8 +41,8 @@ Ascii Art generator
   -f, --font=<FONT>          Font
       --fgc=<COLOR>          Foreground color
   -h, --help                 Show this help message and exit.
-  -i, --image=<FILE>         Source image
-      --invert               Inverts image (silo) or characters matching
+  -i, --imageWrapper=<FILE>         Source imageWrapper
+      --invert               Inverts imageWrapper (silo) or characters matching
                                (console, pixelswap).
       --italic               Make font italic
       --logging=<logLevel>   Valid values: TRACE, DEBUG, INFO, WARNING, ERROR,
@@ -60,7 +60,7 @@ Ascii Art generator
 ## Algorithms
 ### Silo
 Maps text to a silhouette. Does not break works across lines or gaps.
-Requires an input image and text file. Outputs an image.
+Requires an input imageWrapper and text file. Outputs an imageWrapper.
 
 
 #### Light Prince
@@ -76,15 +76,15 @@ java -jar release/ascii-art.jar -a silo -i examples/images/littleprince.png -t e
 
 
 ### PixelSwap
-Creates a true colored ascii pixelated version of an image.
-Requires an input image. Outputs an image.
+Creates a true colored ascii pixelated version of an imageWrapper.
+Requires an input imageWrapper. Outputs an imageWrapper.
 ``` bash
 java -jar release/ascii-art.jar -a pixelswap -i examples/images/building.jpg -o examples/pixelswap.png --bgc "DarkGray"
 ```
 
 ### Console
-Prints an ANSI colored ascii representation of an image to the console.
-Requires an input image. Output to the console.
+Prints an ANSI colored ascii representation of an imageWrapper to the console.
+Requires an input imageWrapper. Output to the console.
 
 ``` bash
 java -jar release/ascii-art.jar -a console -i examples/images/building.jpg --dx 142 --dy 44
@@ -93,8 +93,8 @@ java -jar release/ascii-art.jar -a console -i examples/images/building.jpg --dx 
 ## Helpers
 
 ### Dim
-Prints the ascii aspect ratio of the original image. 
-Requires an input image.
+Prints the ascii aspect ratio of the original imageWrapper. 
+Requires an input imageWrapper.
 You can also specify a desired font to get the aspect ratio in that font.
 ``` bash
 java -jar release/ascii-art.jar -a dim -i examples/images/building.jpg 
@@ -102,7 +102,7 @@ java -jar release/ascii-art.jar -a dim -i examples/images/building.jpg
 
 
 ### Sample
-A tool for determine the --angle for silo. The angle determines how likely a color block will match with the matcher color. Prints out map of the image with matched pixels for a variety of angle values.
+A tool for determine the --angle for silo. The angle determines how likely a color block will match with the matcher color. Prints out map of the imageWrapper with matched pixels for a variety of angle values.
 ``` bash
 java -jar release/ascii-art.jar -a sample -i examples/images/littleprince.png -m black --invert
 ```

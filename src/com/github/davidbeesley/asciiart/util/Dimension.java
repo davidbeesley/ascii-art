@@ -1,4 +1,4 @@
-package util;
+package com.github.davidbeesley.asciiart.util;
 
 public class Dimension {
     int height;

@@ -1,13 +1,11 @@
 package util;
 
-import logger.Logger;
+import loggerOLD.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Util {
 

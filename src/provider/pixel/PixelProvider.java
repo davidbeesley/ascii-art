@@ -3,7 +3,7 @@ package provider.pixel;
 import art.Canvas;
 import art.Pixel;
 import art.Point;
-import logger.Logger;
+import loggerOLD.Logger;
 import provider.CharSetProvider;
 
 import java.awt.*;

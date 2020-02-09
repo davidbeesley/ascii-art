@@ -1,6 +1,6 @@
 package provider.character;
 
-import logger.Logger;
+import loggerOLD.Logger;
 import org.junit.Test;
 import provider.font.FontProvider;
 

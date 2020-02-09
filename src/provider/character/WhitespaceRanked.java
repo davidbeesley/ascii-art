@@ -1,7 +1,6 @@
 package provider.character;
 
 import art.Pixel;
-import logger.Logger;
 import provider.CharSetProvider;
 import provider.pixel.PixelProvider;
 

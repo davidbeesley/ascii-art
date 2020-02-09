@@ -1,6 +1,6 @@
 package provider.character;
 
-import logger.Logger;
+import loggerOLD.Logger;
 
 import java.awt.*;
 import java.io.File;

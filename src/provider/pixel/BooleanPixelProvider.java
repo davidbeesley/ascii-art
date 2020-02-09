@@ -1,9 +1,8 @@
 package provider.pixel;
 
-import logger.Logger;
+import loggerOLD.Logger;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;

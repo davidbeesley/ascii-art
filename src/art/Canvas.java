@@ -1,13 +1,13 @@
 package art;
 
-import logger.Logger;
+import loggerOLD.Logger;
 import provider.character.CharProvider;
 import provider.character.ICharProvider;
 import provider.color.AsciiColorProvider;
 import provider.color.ColorProvider;
 import provider.color.IColorProvider;
 import provider.pixel.PixelProvider;
-import util.Dimension;
+import com.github.davidbeesley.asciiart.util.Dimension;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

@@ -1,4 +1,4 @@
 /**
  * Very simple logger.
  */
-package logger;
+package loggerOLD;

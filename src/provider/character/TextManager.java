@@ -1,7 +1,7 @@
 package provider.character;
 
-import logger.Logger;
-import util.Dimension;
+import loggerOLD.Logger;
+import com.github.davidbeesley.asciiart.util.Dimension;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -1,9 +1,7 @@
 package art;
 
-import logger.Logger;
-import provider.character.BooleanProvider;
 import provider.pixel.BooleanPixelProvider;
-import util.Dimension;
+import com.github.davidbeesley.asciiart.util.Dimension;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

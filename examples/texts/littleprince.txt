@@ -1587,7 +1587,7 @@ hair that trembled in the wind, and I said to myself:
 
 As his lips opened slightly with the suspicious of a half-smile, I said to myself, again: “What 
 moves me so deeply, about this little prince who is sleeping here, is his loyalty to a flower — the 
-image of a rose that shines through his whole being like the flame of a lamp, even when he is 
+imageWrapper of a rose that shines through his whole being like the flame of a lamp, even when he is
 asleep...” 
 
 And I felt him to be more fragile still. I felt the need of protecting him, as if he himself were a 
