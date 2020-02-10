@@ -81,6 +81,6 @@ Prints out the list of possible colors that can be used with the --bgc --fbg -m 
 java -jar release/ascii-art.jar -a colors
 ```
 
-### Credits
+## Credits
 - picocli https://picocli.info/
 - webcolor http://www.java2s.com/Code/Java/2D-Graphics-GUI/Webcolorenum.htm
