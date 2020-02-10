@@ -120,6 +120,52 @@ public class MappedSequenceList {
         return list.get(0).getCapacity() > 0;
     }
 
+    public boolean smoothForward(){
+        boolean smoothed = false;
+        for(int i = 0; i < list.size()-1; i++){
+            if (list.get(i).numWords() == 0){
+                continue;
+            }
+            double score = list.get(i).getDensity() + list.get(i+1).getDensity();
+
+            sendToNext(i);
+
+
+            double modified_score = list.get(i).getDensity() + list.get(i+1).getDensity();
+            if (modified_score > score && list.get(i).valid() && list.get(i+1).valid()){
+                Logger.getInstance().trace("Smoothed forward");
+                smoothed = true;
+            } else {
+                sendToPrevious(i+1);
+
+            }
+        }
+        return smoothed;
+    }
+
+    public boolean smoothBackward(){
+        boolean smoothed = false;
+        for(int i = list.size()-1; i > 0; i--){
+            if (list.get(i).numWords() == 0){
+                continue;
+            }
+            double score = list.get(i).getDensity() + list.get(i-1).getDensity();
+
+            sendToPrevious(i);
+
+
+            double modified_score = list.get(i).getDensity() + list.get(i-1).getDensity();
+            if (modified_score > score && list.get(i).valid() && list.get(i-1).valid()){
+                Logger.getInstance().trace("Smoothed backward");
+                smoothed = true;
+            } else {
+                sendToNext(i-1);
+
+            }
+        }
+        return smoothed;
+    }
+
     public ArrayList<Sequence> getList() {
         return list;
     }

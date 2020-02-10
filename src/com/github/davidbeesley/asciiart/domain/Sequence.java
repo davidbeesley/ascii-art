@@ -36,6 +36,10 @@ public class Sequence{
     public int getCapacity(){
         return size - getUsed();
     }
+
+    public boolean valid(){
+        return getCapacity() >= 0;
+    }
     public void pushFront(String word){
         assignedWords.addFirst(word);
     }

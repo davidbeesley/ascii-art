@@ -13,6 +13,11 @@ public class TextMapper {
                 return false;
             }
         }
+        boolean smoothed = true;
+        while (smoothed){
+            smoothed = list.smoothForward() || list.smoothBackward();
+        }
+
         Logger.getInstance().debug("Mapping succeeded");
         return true;
     }
