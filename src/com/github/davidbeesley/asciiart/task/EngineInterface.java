@@ -8,7 +8,7 @@ public interface EngineInterface {
     Dimension getRecommendedDimensions(BooleanMatrix booleanMatrix, StyleSettings settings, Tokens tokens);
     BooleanMatrix scaleBooleanMatrix(BooleanMatrix  booleanMatrix, Dimension newDimension);
     Tokens tokenize(TextSource text);
-    MappedSequenceList createMappedTextList(BooleanMatrix booleanMatrix);
+    MappedSequenceList createMappedTextList(BooleanMatrix booleanMatrix, double densityTarget);
     boolean mapText(MappedSequenceList textList, Tokens tokens);
     MappedSequenceList retrieveMappedText();
     AsciiMatrix convertToMatrix(MappedSequenceList textList, Dimension dim);

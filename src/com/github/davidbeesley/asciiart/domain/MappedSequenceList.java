@@ -9,14 +9,17 @@ import java.util.LinkedList;
 public class MappedSequenceList {
     private ArrayList<Sequence> list;
     private BooleanMatrix mat;
+    private double targetDensity;
 
 
-    public MappedSequenceList(BooleanMatrix matrix){
+    public MappedSequenceList(BooleanMatrix matrix, double targetDensity){
         this.mat = matrix;
         list = new ArrayList<>();
+        this.targetDensity = targetDensity;
     }
 
     public void map(){
+        int total_allocated = 0;
         Dimension dim = mat.getDim();
         for (int y = 0; y < dim.getHeight(); y++){
             int currentStreak = 0;
@@ -24,13 +27,20 @@ public class MappedSequenceList {
                 if (mat.getPoint(x, y)) {
                     currentStreak += 1;
                 } else {
-                    if (currentStreak >= 3) {
-                        list.add(new Sequence(x-currentStreak-1, y, currentStreak));
+                    if (currentStreak >= 3 ) {
+                        list.add(new Sequence(x-currentStreak, y, currentStreak));
+                        total_allocated  += currentStreak;
                     }
                     currentStreak = 0;
                 }
             }
+            if (currentStreak >= 3){
+                list.add(new Sequence(dim.getWidth()-currentStreak, y, currentStreak));
+                total_allocated  += currentStreak;
+            }
+
         }
+        Logger.getInstance().debug("Total Allocated: " + total_allocated);
     }
 
     @Override
@@ -75,19 +85,50 @@ public class MappedSequenceList {
         return true;
     }
 
-    public boolean defaultLoadTokens(Tokens tokens){
+    public void defaultLoadTokens(Tokens tokens){
+        tokens.reset();
         for (Sequence s: list){
-            while (s.getCapacity() > tokens.peekSize()){
+            while (s.getSimulatedDensity(tokens.peekSize()) < targetDensity+.01){
                 s.pushBack(tokens.next());
                 if (tokens.finished()){
-                    return true;
+                    return;
                 }
             }
         }
-        return false;
+        while(tokens.finished() == false){
+            list.get(list.size()-1).pushBack(tokens.next());
+        }
+    }
+
+    public boolean pushForward(){
+        for(int i = 0; i < list.size()-1; i++){
+            while(list.get(i).getCapacity() < 0){
+                Logger.getInstance().trace("Sent forward");
+                sendToNext(i);
+            }
+        }
+        return list.get(list.size()-1).getCapacity() > 0;
+    }
+
+    public boolean pushBackward(){
+        for(int i = list.size() - 1; i > 0; i--){
+            while(list.get(i).getCapacity() < 0){
+                Logger.getInstance().trace("Sent backward");
+                sendToPrevious(i);
+            }
+        }
+        return list.get(0).getCapacity() > 0;
     }
 
     public ArrayList<Sequence> getList() {
         return list;
+    }
+
+    public int getTotalCapacity(){
+        int count = 0;
+        for (Sequence s : list){
+            count += s.getCapacity() + 1;
+        }
+        return count;
     }
 }

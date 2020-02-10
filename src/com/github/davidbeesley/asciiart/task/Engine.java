@@ -90,8 +90,8 @@ public class Engine implements EngineInterface {
     }
 
     @Override
-    public MappedSequenceList createMappedTextList(BooleanMatrix booleanMatrix) {
-        MappedSequenceList list = new MappedSequenceList(booleanMatrix);
+    public MappedSequenceList createMappedTextList(BooleanMatrix booleanMatrix, double target) {
+        MappedSequenceList list = new MappedSequenceList(booleanMatrix, target);
         list.map();
         return list;
     }
@@ -104,7 +104,7 @@ public class Engine implements EngineInterface {
 
     @Override
     public MappedSequenceList retrieveMappedText() {
-        Logger.getInstance().debug("List retrieved");
+        Logger.getInstance().trace("List retrieved");
         return list;
     }
 

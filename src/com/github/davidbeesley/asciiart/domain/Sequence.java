@@ -15,7 +15,7 @@ public class Sequence{
         this.size = size;
         data = new char[size];
         for (int i = 0; i < size; i++){
-            data[i] = '?'; // todo
+            data[i] = ' '; // todo
         }
         assignedWords = new LinkedList<>();
 
@@ -52,6 +52,10 @@ public class Sequence{
     public double getDensity(){
         return getUsed() * 1.0 / size;
     }
+
+    public double getSimulatedDensity(int additional){
+        return (getUsed() * 1.0 + additional) / size;
+    }
     private int getUsed(){
         if (assignedWords.size() == 0){
             return 0;
@@ -78,7 +82,7 @@ public class Sequence{
             System.exit(1);
         }
         if (assignedWords.size() == 0){
-            Logger.getInstance().debug("Empty sequence :(");
+            Logger.getInstance().trace("Empty sequence :(");
             return new String(data);
         }
         place(assignedWords.get(0), 0);
@@ -86,7 +90,7 @@ public class Sequence{
             Logger.getInstance().trace("Single word sequence");
             return new String(data);
         }
-        place(assignedWords.getLast(), size - assignedWords.getLast().length() -1);
+        place(assignedWords.getLast(), size - assignedWords.getLast().length());
         if (assignedWords.size() == 2){
             return new String(data);
         }
@@ -102,9 +106,10 @@ public class Sequence{
         extraSpaces -= spacesPerWords;
         for (int i = 1; i < assignedWords.size() - 1; i++){
             place(assignedWords.get(i), currentIndex);
-            currentIndex += assignedWords.get(i).length();
+            currentIndex += assignedWords.get(i).length() + 1;
             if (extraSpaces >= spacesPerWords){
                 currentIndex += spacesPerWords;
+                extraSpaces -= spacesPerWords;
             }
         }
         return new String(data);

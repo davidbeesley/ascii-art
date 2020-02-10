@@ -7,11 +7,13 @@ import com.github.davidbeesley.asciiart.util.logger.Logger;
 public class TextMapper {
 
     public static boolean mapText(MappedSequenceList list, Tokens tokens){
-        if (list.defaultLoadTokens(tokens) == false){
-            return false; // Couldn't map at all.
+        list.defaultLoadTokens(tokens);
+        if (list.pushForward() == false){
+            if (list.pushBackward() == false){
+                return false;
+            }
         }
-        // todo
-        Logger.getInstance().info("Mapping succeeded");
+        Logger.getInstance().debug("Mapping succeeded");
         return true;
     }
 }
