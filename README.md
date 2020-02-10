@@ -1,16 +1,27 @@
 # ascii-art
-Map a text file to a silhouette.
+
+Map a text file uniformly to a silhouette. Does not break works across lines or gaps.
+Requires an input image and text file. Outputs an image.
+
+
 
 
 ## Examples
 
 #### LightPrince
+
+``` bash
+java -jar release/ascii-art.jar -i examples/images/littleprince.png --bgc white --fgc black -m black -t examples/texts/littleprince.txt -o examples/lightprince.png 
+```
 ![](examples/lightprince.png?raw=true)
 
 
 #### DarkPrince
-![](examples/darkprince.png?raw=true)
 
+``` bash
+java -jar release/ascii-art.jar -i examples/images/littleprince.png --bgc white --fgc black -m black -t examples/texts/littleprince.txt -o examples/lightprince.png 
+```
+![](examples/darkprince.png?raw=true)
 
 
 ## Usage
@@ -43,22 +54,6 @@ Ascii Art generator
   -t, --text=<FILE>          Source text
   -V, --version              Print version information and exit.
 
-
-```
-
-### 
-Maps text to a silhouette. Does not break works across lines or gaps.
-Requires an input image and text file. Outputs an image.
-
-
-#### Light Prince
-``` bash
-java -jar release/ascii-art.jar -i examples/images/littleprince.png --bgc white --fgc black -m black -t examples/texts/littleprince.txt -o examples/lightprince.png 
-```
-
-#### Dark Prince
-``` bash
-java -jar release/ascii-art.jar -i examples/images/littleprince.png --bgc black --fgc white -m black --invert -t examples/texts/littleprince.txt -o examples/darkprince.png
 
 ```
 
