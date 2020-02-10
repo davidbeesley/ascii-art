@@ -6,9 +6,7 @@ import com.github.davidbeesley.asciiart.domain.ImageWrapper;
 import com.github.davidbeesley.asciiart.domain.StyleSettings;
 import com.github.davidbeesley.asciiart.domain.TextSource;
 import com.github.davidbeesley.asciiart.task.Engine;
-import com.github.davidbeesley.asciiart.util.Dimension;
 import com.github.davidbeesley.asciiart.util.FontWrapper;
-import com.github.davidbeesley.asciiart.util.ImageType;
 import com.github.davidbeesley.asciiart.util.logger.LogLevel;
 import com.github.davidbeesley.asciiart.util.logger.Logger;
 import org.eoti.awt.WebColor;
@@ -36,24 +34,17 @@ public class AsciiArt implements Callable<Integer> {
     @Option(names = {"-a", "--algorithm"}, description = "Valid values: ${COMPLETION-CANDIDATES}")
     Algorithm alg = Algorithm.map;
 
-    @Option(names = {"-e", "--ext"}, description = "Output format. Valid values: ${COMPLETION-CANDIDATES}")
-    ImageType outputType = ImageType.PNG;
-    String outputExtension;
-
 
 
     @Option(names = {"-i", "--image"}, description = "Source image", paramLabel = "<FILE>")
     File imageFile;
 
-    @Option(names = {"-o", "--out"}, description = "Output filename", paramLabel = "<FILE>")
+    @Option(names = {"-o", "--out"}, description = "Output filename (png file)", paramLabel = "<FILE>")
     File outFile;
 
     @Option(names = {"-t", "--text"}, description = "Source text", paramLabel = "<FILE>")
     File textFile;
 
-    @Option(names = {"-x","--dx"}, description = "Desired output dimension x") int dx = -1;
-    @Option(names = {"-y", "--dy"}, description = "Desired output dimension y") int dy = -1;
-    Dimension dim;
 
     @Option(names = {"-b", "--border"}, description = "Border width") int border = 30;
 
@@ -72,14 +63,14 @@ public class AsciiArt implements Callable<Integer> {
     @Option(names = {"--angle"}, description = "Matching angle", paramLabel = "<ANGLE>")
     double matchAngle = .5;
 
-    @Option(names = {"--invert"}, description = "Inverts image (silo) or characters matching (console, pixelswap).")
+    @Option(names = {"--invert"}, description = "Invert silhouette matching.")
     boolean invert = false;
 
-    @Option(names = {"-f", "--font"}, description = "Font", paramLabel = "<FONT>") String fontString = Font.MONOSPACED;
+    @Option(names = {"-f", "--font"}, description = "Font (Monospaced recommended)", paramLabel = "<FONT>") String fontString = Font.MONOSPACED;
     Font font;
 
     @Option(names = {"-s", "--size"}, description = "Font size", paramLabel = "<SIZE>")
-    int fontSize = 12;
+    int fontSize = 10;
 
     @Option(names = {"--logging"},  description = "Valid values: ${COMPLETION-CANDIDATES}")
     LogLevel logLevel = LogLevel.WARNING;
@@ -116,16 +107,10 @@ public class AsciiArt implements Callable<Integer> {
         } else if (italic){
             fontType = Font.ITALIC;
         }
+
         // Font
         font =  new Font(fontString, fontType, fontSize);
-        switch (outputType){
-            case PNG:
-                outputExtension = "png";
-                break;
-            case JPG:
-                outputExtension = "jpg";
-                break;
-        }
+
 
 
         switch (alg){
@@ -153,11 +138,11 @@ public class AsciiArt implements Callable<Integer> {
         }
 
 
-        return 0; // exit code
+        return 0;
     }
 
 
-    public static void main(String... args) { // bootstrap the application
+    public static void main(String... args) {
         System.exit(new CommandLine(new AsciiArt()).setCaseInsensitiveEnumValuesAllowed(true).execute(args));
     }
 
@@ -187,16 +172,16 @@ public class AsciiArt implements Callable<Integer> {
         }
         // output file
         if (outFile == null){
-            outFile =  new File(Util.stripExtension(imageFile.getName()) + "." + outputExtension);
+            outFile =  new File(Util.stripExtension(imageFile.getName()) + ".png");
         }
         FontWrapper fontWrapper = new FontWrapper(font);
-        StyleSettings styleSettings = new StyleSettings(fontWrapper, foregroundColor, backgroundColor, border, outputType);
+        StyleSettings styleSettings = new StyleSettings(fontWrapper, foregroundColor, backgroundColor, border);
         ImageWrapper imageWrapper = new ImageWrapper(Util.readImage(imageFile));
         ImageProcessorSettings imageProcessorSettings = new ImageProcessorSettings(matcherColor, matchAngle, invert);
         TextSource textSource = new TextSource(textFile);
         MapTextToShape mapTextToShape = new MapTextToShape(new Engine(), styleSettings, imageProcessorSettings, textSource, imageWrapper);
         ImageWrapper output = mapTextToShape.make();
-        Util.writeImage(output.getBufferedImage(), outFile, outputType.toString());
+        Util.writeImage(output.getBufferedImage(), outFile, "png");
         return 0;
     }
 
@@ -210,58 +195,4 @@ public class AsciiArt implements Callable<Integer> {
 
 
 }
-
-/* Potential algorithms
-
-     private void pixelswap(){
-        BufferedImage source = Util.readImage(imageFile);
-        if (dim == null){
-            dim = Canvas.getRecommendedDimension(source);
-        }
-        Logger.info("Using height and width: " + dim.getHeight()+ " " + dim.getWidth());
-        Canvas canvas = new Canvas(source, dim);
-        canvas.addBorder(border);
-
-        Set<Character> charSet = CharSetProvider.getLargeSet();
-        ICharProvider charProvider = new WhitespaceRanked(font, charSet, invert);
-        PixelProvider pixelProvider = new PixelProvider(font, charSet);
-
-
-        canvas.setCharProvider(charProvider);
-        canvas.setColorProvider(new ColorProvider());
-        canvas.setBackground(backgroundColor);
-        BufferedImage image = canvas.generateASCII(pixelProvider);
-        Util.writeImage(image, outFile, outputExtension);
-    }
-
-    private void console(){
-        BufferedImage source = Util.readImage(imageFile);
-        if (dim == null){
-            Dimension dim1 = Canvas.getRecommendedDimension(source);
-            int h = dim1.getHeight();
-            int w = dim1.getWidth();
-            while(h > 30 || w > 60){
-                h = (int) (h*.9);
-                w = (int) (w*.9);
-            }
-            dim = new Dimension(h,w);
-        }
-        Logger.info("Using height and width: " + dim.getHeight()+ " " + dim.getWidth());
-        Canvas canvas = new Canvas(source, dim);
-        canvas.addBorder(border);
-
-        Set<Character> charSet = CharSetProvider.getLargeSet();
-        ICharProvider charProvider = new WhitespaceRanked(font, charSet, invert);
-
-
-        canvas.setCharProvider(charProvider);
-        canvas.setColorProvider(new ColorProvider());
-        canvas.printToConsole();
-    }
-     private void dim(){
-        BufferedImage source = Util.readImage(imageFile);
-        dim = Canvas.getRecommendedDimension(source);
-        System.out.println("dx: " + dim.getWidth() + "\tdy: " + dim.getHeight());
-    }
- */
 

@@ -1,14 +1,9 @@
 # ascii-art
-A set of tools for creating ascii art from existing images and text files.
+Map a text file to a silhouette.
 
-The main algorithms are 
-- silo: The flagship feature. Map a text file to a silhouette.
-- console: Print an ANSI colored ascii representation of an imageWrapper to the console.
-- pixelswap: Create a true colored ascii pixelated version of an imageWrapper.
 
 ## Examples
 
-### Silo
 #### LightPrince
 ![](examples/lightprince.png?raw=true)
 
@@ -17,43 +12,36 @@ The main algorithms are
 ![](examples/darkprince.png?raw=true)
 
 
-### PixelSwap
-![](examples/pixelswap.png?raw=true)
-
-### Console
-![](examples/console.png?raw=true)
 
 ## Usage
 ``` 
 java -jar release/ascii-art.jar -h
-Usage: AsciiArt [-hV] [--bold] [--invert] [--italic] -a=<alg> [--angle=<ANGLE>]
-                [-b=<border>] [--bgc=<COLOR>] [-e=<outputType>] [-f=<FONT>]
-                [--fgc=<COLOR>] [-i=<FILE>] [--logging=<logLevel>] [-m=<COLOR>]
-                [-o=<FILE>] [-s=<SIZE>] [-t=<FILE>] [-x=<dx>] [-y=<dy>]
+Usage: AsciiArt [-hV] [--bold] [--invert] [--italic] [-a=<alg>]
+                [--angle=<ANGLE>] [-b=<border>] [--bgc=<COLOR>]
+                [-e=<outputType>] [-f=<FONT>] [--fgc=<COLOR>] [-i=<FILE>]
+                [--logging=<logLevel>] [-m=<COLOR>] [-o=<FILE>] [-s=<SIZE>]
+                [-t=<FILE>]
 Ascii Art generator
-  -a, --algorithm=<alg>      Valid values: CONSOLE, FONTS, PIXELSWAP, SAMPLE,
-                               SILO, DIM
+  -a, --algorithm=<alg>      Valid values: map, sample, fonts, colors
       --angle=<ANGLE>        Matching angle
   -b, --border=<border>      Border width
-      --bgc=<COLOR>          Background color
+      --bgc=<COLOR>          Background color.
       --bold                 Make font bold
-  -e, --ext=<outputType>     Output format. Valid values: JPG, PNG
+  -e, --ext=<outputType>     Output format. Valid values: jpg, png
   -f, --font=<FONT>          Font
-      --fgc=<COLOR>          Foreground color
+      --fgc=<COLOR>          Foreground color.
   -h, --help                 Show this help message and exit.
-  -i, --imageWrapper=<FILE>         Source imageWrapper
-      --invert               Inverts imageWrapper (silo) or characters matching
+  -i, --image=<FILE>         Source image
+      --invert               Inverts image (silo) or characters matching
                                (console, pixelswap).
       --italic               Make font italic
       --logging=<logLevel>   Valid values: TRACE, DEBUG, INFO, WARNING, ERROR,
                                NONE
-  -m, --matcher=<COLOR>      Silhouette color to match
+  -m, --matcher=<COLOR>      Silhouette color to match.
   -o, --out=<FILE>           Output filename
   -s, --size=<SIZE>          Font size
   -t, --text=<FILE>          Source text
   -V, --version              Print version information and exit.
-  -x, --dx=<dx>              Desired output dimension x
-  -y, --dy=<dy>              Desired output dimension y
 
 ```
 
