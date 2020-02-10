@@ -3,6 +3,7 @@ package com.github.davidbeesley.asciiart.exec;
 import com.github.davidbeesley.asciiart.domain.*;
 import com.github.davidbeesley.asciiart.task.EngineInterface;
 import com.github.davidbeesley.asciiart.util.Dimension;
+import com.github.davidbeesley.asciiart.util.logger.Logger;
 
 public class MapTextToShape {
     private StyleSettings styleSettings;
@@ -21,18 +22,27 @@ public class MapTextToShape {
 
     public ImageWrapper make(){
         BooleanMatrix initialBooleanMatrix = engine.imageToBooleanMatrix(imageWrapper, imageProcessorSettings);
+        BooleanMatrix debugMatrix = engine.scaleBooleanMatrix(initialBooleanMatrix, new Dimension(20,40));
+        Logger.getInstance().debug("Boolean Silhouette:\n"+debugMatrix);
+        Logger.getInstance().trace("Mapping\n"+engine.createMappedTextList(debugMatrix));
         Tokens tokens = engine.tokenize(textSource);
         boolean succeeded = false;
         double density = .98;
+        Dimension dimension = null;
         while (succeeded == false){
             styleSettings.setDensity(density);
-            Dimension dimension = engine.getRecommendedDimensions(initialBooleanMatrix, styleSettings, tokens);
+            dimension = engine.getRecommendedDimensions(initialBooleanMatrix, styleSettings, tokens);
             BooleanMatrix scaledMatrix = engine.scaleBooleanMatrix(initialBooleanMatrix, dimension);
-            MappedTextList textList = engine.getMappedTextList(scaledMatrix);
+            MappedSequenceList textList = engine.createMappedTextList(scaledMatrix);
             succeeded = engine.mapText(textList, tokens);
+            density -= .01;
+            if (density < .5){
+                Logger.getInstance().error("Mapping failed.");
+                System.exit(1);
+            }
         }
-        MappedTextList mappedText = engine.retrieveMappedText();
-        AsciiMatrix asciiMatrix = engine.convertToMatrix(mappedText);
+        MappedSequenceList mappedText = engine.retrieveMappedText();
+        AsciiMatrix asciiMatrix = engine.convertToMatrix(mappedText, dimension);
         return engine.convertToImage(asciiMatrix, styleSettings);
     }
 }

@@ -1,6 +1,5 @@
 package provider.character;
 
-import loggerOLD.Logger;
 
 import java.awt.*;
 import java.io.File;
@@ -49,10 +48,10 @@ public class TextProvider extends CharProvider  {
         this.invert = invert;
         useColorMap = new TreeMap<>();
         if (canvas.getPixelWidth() * canvas.getPixelHeight() < text.length()){
-            Logger.error("Image is too small for text");
+            //Logger.error("Image is too small for text");
             System.exit(1);
         }
-        Logger.info("Ratio is " + text.length() +":" + canvas.getPixelWidth() * canvas.getPixelHeight());
+        //Logger.info("Ratio is " + text.length() +":" + canvas.getPixelWidth() * canvas.getPixelHeight());
 
         Color[][] colorMap = canvas.getColorMap();
         Map<Integer, Integer> colorCountMap = new TreeMap<>();
@@ -75,7 +74,7 @@ public class TextProvider extends CharProvider  {
             int key = colorCountMap.keySet().iterator().next();
             int count = colorCountMap.get(key);
             if (count== 0) {
-                Logger.error("Logic Error");
+                //Logger.error("Logic Error");
                 System.exit(1);
             }
 
@@ -110,7 +109,7 @@ public class TextProvider extends CharProvider  {
     @Override
     public char getChar(Color color, int height, int width){
         if (isCalibrated == false){
-            Logger.error("Please calibrate before use.");
+            //Logger.getInstance().error("Please calibrate before use.");
             System.exit(1);
         }
         int key = color.getRed() + color.getGreen() + color.getBlue();
@@ -145,8 +144,8 @@ public class TextProvider extends CharProvider  {
             }
         }
         catch (IOException e){
-            Logger.warning("Invalid filename: "+ filename);
-            Logger.trace(e.getMessage());
+            //Logger.getInstance().warning("Invalid filename: "+ filename);
+            //Logger.getInstance().trace(e.getMessage());
             System.exit(1);
         }
         return builder.toString();

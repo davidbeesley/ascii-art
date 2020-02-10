@@ -1,6 +1,5 @@
 package provider.pixel;
 
-import loggerOLD.Logger;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -49,10 +48,10 @@ public class BooleanPixelProvider {
         //System.out.print(c.getRed()+ " " + c.getGreen()+ " " + c.getBlue() + " " + c.getAlpha() + "\n");
         boolean matched = true;
         if (invert) matched = false;
-        //Logger.trace(getMinAngle(c) + " " + minAngle);
+        ////Logger.trace(getMinAngle(c) + " " + minAngle);
 
         //if (c.getAlpha() == 255) return !matched;
-        //Logger.trace("RGBA:" + c.getRed() + " "+ c.getGreen() + " "+ c.getBlue() + " "+ c.getAlpha() + " " + getMinAngle(c));
+        ////Logger.trace("RGBA:" + c.getRed() + " "+ c.getGreen() + " "+ c.getBlue() + " "+ c.getAlpha() + " " + getMinAngle(c));
         //System.exit(1);
         if (getMinAngle(c) <= minAngle){
 
@@ -73,14 +72,14 @@ public class BooleanPixelProvider {
         for (Color matcher : matchers) {
             Integer[] b= getVector(matcher);
             if (angle(a,b) < min) min = angle(a,b);
-            //Logger.trace(a.toString() + " " + b.toString() + " ANGLE:    b" + angle(a,b));
+            ////Logger.trace(a.toString() + " " + b.toString() + " ANGLE:    b" + angle(a,b));
         }
             return min;
     }
 
     public static double angle(Integer[] a, Integer[] b){
         if (a.length != b.length){
-            Logger.error("logic error");
+            //Logger.error("logic error");
             System.exit(1);
         }
 

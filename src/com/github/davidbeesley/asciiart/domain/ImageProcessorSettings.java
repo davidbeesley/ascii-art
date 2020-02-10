@@ -5,10 +5,12 @@ import java.awt.*;
 public class ImageProcessorSettings {
     private Color matchColor;
     private double matchAngle;
+    private boolean inverse;
 
-    public ImageProcessorSettings(Color matchColor, double matchAngle) {
+    public ImageProcessorSettings(Color matchColor, double matchAngle, boolean inverse) {
         this.matchColor = matchColor;
         this.matchAngle = matchAngle;
+        this.inverse = inverse;
     }
 
     public Color getMatchColor() {
@@ -17,5 +19,9 @@ public class ImageProcessorSettings {
 
     public double getMatchAngle() {
         return matchAngle;
+    }
+
+    public boolean isInverse(){
+        return inverse;
     }
 }

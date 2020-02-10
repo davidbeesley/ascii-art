@@ -1,6 +1,6 @@
 package provider.character;
 
-import loggerOLD.Logger;
+import com.github.davidbeesley.asciiart.util.logger.Logger;
 import com.github.davidbeesley.asciiart.util.Dimension;
 
 import java.awt.image.BufferedImage;
@@ -29,7 +29,7 @@ public class TextManager {
             }
             catch (IOException e){
                 //Logger.warning("Invalid filename: "+ file.getName());
-                Logger.error(e.getMessage());
+                Logger.getInstance().error(e.getMessage());
                 System.exit(1);
             }
 
@@ -63,7 +63,7 @@ public class TextManager {
 
     public String peek(){
         if (words.size() == 0){
-            Logger.error("Logic error");
+            Logger.getInstance().error("Logic error");
             System.exit(1);
         }
         String result = words.get(0);
@@ -72,14 +72,14 @@ public class TextManager {
 
     public String removeWord(){
         if (words.size() == 0){
-            Logger.error("Logic error");
+            Logger.getInstance().error("Logic error");
             System.exit(1);
         }
         String result = words.get(0);
         words.remove(0);
         length -= result.length();
         if (result.charAt(result.length()-1) != ' ') {
-            Logger.error("Logic error... word must end with space");
+            Logger.getInstance().error("Logic error... word must end with space");
             System.exit(1);
         }
         return result;
@@ -94,7 +94,7 @@ public class TextManager {
         int mustAdd = newLength - getLength();
 
         if (mustAdd < 0) {
-            Logger.error("Attempted increase to a shorter length." + newLength + " < " + getLength());
+            Logger.getInstance().error("Attempted increase to a shorter length." + newLength + " < " + getLength());
             System.exit(1);
         }
 
@@ -148,7 +148,7 @@ public class TextManager {
         }
         String result = builder.toString();
         if (result.length() != length ){
-            Logger.error("Logic error. Length was incorrect. " + result.length() + " expected was: " + (length));
+            Logger.getInstance().error("Logic error. Length was incorrect. " + result.length() + " expected was: " + (length));
             System.exit(1);
         }
         return result;
@@ -159,7 +159,7 @@ public class TextManager {
         double height = img.getHeight();
         double width = img.getWidth();
         double ratio = width / height * heightToWidth;
-        Logger.trace("Ratio: " + ratio);
+        Logger.getInstance().trace("Ratio: " + ratio);
 
         int chars = getLength();
 

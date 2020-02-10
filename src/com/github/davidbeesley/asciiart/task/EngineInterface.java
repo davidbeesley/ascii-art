@@ -8,10 +8,10 @@ public interface EngineInterface {
     Dimension getRecommendedDimensions(BooleanMatrix booleanMatrix, StyleSettings settings, Tokens tokens);
     BooleanMatrix scaleBooleanMatrix(BooleanMatrix  booleanMatrix, Dimension newDimension);
     Tokens tokenize(TextSource text);
-    MappedTextList getMappedTextList(BooleanMatrix booleanMatrix);
-    boolean mapText(MappedTextList textList, Tokens tokens);
-    MappedTextList retrieveMappedText();
-    AsciiMatrix convertToMatrix(MappedTextList textList);
+    MappedSequenceList createMappedTextList(BooleanMatrix booleanMatrix);
+    boolean mapText(MappedSequenceList textList, Tokens tokens);
+    MappedSequenceList retrieveMappedText();
+    AsciiMatrix convertToMatrix(MappedSequenceList textList, Dimension dim);
     ImageWrapper convertToImage(AsciiMatrix asciiMatrix, StyleSettings settings);
 
 }

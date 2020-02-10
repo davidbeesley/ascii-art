@@ -1,6 +1,6 @@
 package art;
 
-import loggerOLD.Logger;
+import com.github.davidbeesley.asciiart.util.logger.*;
 import provider.character.CharProvider;
 import provider.character.ICharProvider;
 import provider.color.AsciiColorProvider;
@@ -51,7 +51,7 @@ public class Canvas {
 
 
     private void init(BufferedImage image, int height, int width){
-        Logger.trace("Height: " + height + " Width: " + width);
+        Logger.getInstance().getInstance().trace("Height: " + height + " Width: " + width);
         originalImage = image;
         pixelHeight = height;
         pixelWidth = width;
@@ -111,7 +111,7 @@ public class Canvas {
         int widthIncrease = originalImage.getWidth() / (pixelWidth);
 
         if (heightIncrease == 0 || widthIncrease == 0){
-            Logger.trace("Using modified formula");
+            Logger.getInstance().trace("Using modified formula");
             double heightRatio = originalImage.getHeight() * 1.0 / pixelHeight;
             double widthRatio =  originalImage.getWidth() * 1.0 / pixelWidth;
             for (int h = 0; h < pixelHeight;  h++) {
@@ -170,7 +170,7 @@ public class Canvas {
 
                 Color average = averages[h][w];
                 points[h][w] = new Point(colorProvider.getColor(average, h, w), colorProvider.getBackground(average, background, h, w), charProvider.getChar(average, h, w));
-                //Logger.info(points[h][w].backgroundColor + "");
+                //Logger.getInstance().info(points[h][w].backgroundColor + "");
             }
         }
         return points;
@@ -187,7 +187,7 @@ public class Canvas {
 
         //BufferedImage result = new BufferedImage(imageWidth + 2 * borderWidth, imageHeight + 2 * borderWidth, BufferedImage.TYPE_BYTE_GRAY);
 
-        Logger.trace("Space for image was allocated. Hooray.");
+        Logger.getInstance().trace("Space for image was allocated. Hooray.");
         Graphics2D graphics2D = result.createGraphics();
         graphics2D.setColor(borderColor);
         graphics2D.fillRect(0,0, imageWidth + 2 *borderWidth, imageHeight + 2 * borderWidth);
@@ -196,7 +196,7 @@ public class Canvas {
         graphics2D.dispose();
 
         for (int pixelH = 0; pixelH < pixelHeight; pixelH++){
-           if (pixelH % 10 == 0) Logger.trace("Calculating row: " + pixelH + "/" + pixelHeight);
+           if (pixelH % 10 == 0) Logger.getInstance().trace("Calculating row: " + pixelH + "/" + pixelHeight);
 
             for (int pixelW = 0; pixelW < pixelWidth; pixelW++){
 
@@ -209,7 +209,7 @@ public class Canvas {
                         Color color = currentPixel.getColor(wOffset, hOffset);
                         //System.out.println(color.getRed() + " " + color.getBlue() + " " + color.getGreen() + " " + color.getAlpha());
                         if (color.getAlpha() != 0) {
-                            //Logger.trace("THIS RAN");
+                            //Logger.getInstance().trace("THIS RAN");
                             result.setRGB(w +wOffset + borderWidth,h + hOffset+ borderWidth,color.getRGB());
 
                         }
@@ -221,7 +221,7 @@ public class Canvas {
 
         /*
         for (int h = 0; h < imageHeight; h++){
-            //if (h % 1000 == 0)            Logger.trace("Calculating row: " + h + "/" + imageHeight);
+            //if (h % 1000 == 0)            Logger.getInstance().trace("Calculating row: " + h + "/" + imageHeight);
             for (int w = 0; w < imageWidth; w++){
                 int pixelH = h / pixelProvider.getPixelHeight();
                 int pixelW = w / pixelProvider.getPixelWidth();
@@ -251,7 +251,7 @@ public class Canvas {
         double height = img.getHeight();
         double width = img.getWidth();
         double ratio = width / height * 2;
-        Logger.trace("Ratio: " + ratio);
+        Logger.getInstance().trace("Ratio: " + ratio);
 
 
 
@@ -263,7 +263,7 @@ public class Canvas {
             pixelWidth = (int) (pixelHeight * ratio);
         }
 
-        Logger.trace("Using dimension: " + pixelHeight+"x"+pixelWidth);
+        Logger.getInstance().trace("Using dimension: " + pixelHeight+"x"+pixelWidth);
         return new Dimension(pixelHeight, pixelWidth);
 
     }

@@ -3,7 +3,7 @@ package provider.pixel;
 import art.Canvas;
 import art.Pixel;
 import art.Point;
-import loggerOLD.Logger;
+import com.github.davidbeesley.asciiart.util.logger.Logger;
 import provider.CharSetProvider;
 
 import java.awt.*;
@@ -47,7 +47,7 @@ public class PixelProvider {
 
         if (pixelHeight == 0) pixelHeight++;
 
-        Logger.trace("Max height: " + pixelHeight + " Max width: " + pixelWidth);
+        Logger.getInstance().trace("Max height: " + pixelHeight + " Max width: " + pixelWidth);
     }
 
     public void setPixelWidth(char c) {
@@ -68,7 +68,7 @@ public class PixelProvider {
 
     public double getHeightToWidth() {
         double temp = pixelHeight * 1.0 / (pixelWidth);
-        Logger.trace(temp + " " + (temp * Canvas.SCALE));
+        Logger.getInstance().trace(temp + " " + (temp * Canvas.SCALE));
         return temp * Canvas.SCALE;
     }
 
@@ -99,7 +99,7 @@ public class PixelProvider {
         g2d.setColor(color);
         if (font.canDisplay(c) == false){
             c = ' ';
-            Logger.warning("Received invalid character.");
+            Logger.getInstance().warning("Received invalid character.");
         }
         g2d.drawString(Character.toString(c), 0, fm.getAscent());
         g2d.dispose();

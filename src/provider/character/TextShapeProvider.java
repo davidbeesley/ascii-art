@@ -1,7 +1,6 @@
 package provider.character;
 
 import art.BooleanCanvas;
-import loggerOLD.Logger;
 import provider.pixel.BooleanPixelProvider;
 import com.github.davidbeesley.asciiart.util.Dimension;
 
@@ -26,14 +25,14 @@ public class TextShapeProvider implements  ICharProvider {
         characterSet = textManager.getCharSet();
         nextChars = new LinkedList<>();
         density = START_DENSITY;
-        Logger.message("Beginning mapping. Please be patient.");
+        ////Logger.getInstance().message("Beginning mapping. Please be patient.");
         while (attemptToMap(map, density) == false){
             if (density < .5){
-                Logger.error("Could not map.");
+                //Logger.getInstance().error("Could not map.");
                 System.exit(1);
             }
             else {
-                Logger.info("Attempt with density " + density + " failed. Trying again");
+                //Logger.getInstance().info("Attempt with density " + density + " failed. Trying again");
                 density -= .01;
             }
 
@@ -50,7 +49,7 @@ public class TextShapeProvider implements  ICharProvider {
         double height = img.getHeight();
         double width = img.getWidth();
         double ratio = width / height * heightToWidth;
-        Logger.trace("Ratio: " + ratio);
+        //Logger.trace("Ratio: " + ratio);
 
         int chars = textManager.getLength();
 
@@ -58,16 +57,16 @@ public class TextShapeProvider implements  ICharProvider {
         int pixelWidth = (int) (pixelHeight * ratio);
         int count = getBooleanCount(img, booleanPixelProvider, pixelHeight, pixelWidth);
         if (count == 0) {
-            Logger.error("getBooleanCount failed");
+            //Logger.error("getBooleanCount failed");
             System.exit(1);
         }
         while( count * START_DENSITY < chars){
-            //Logger.trace("ph: " + pixelHeight + " pw: " + pixelWidth + " count:" + count + " count*density: " + (count * density) + " totalChars: " + chars);
+            ////Logger.trace("ph: " + pixelHeight + " pw: " + pixelWidth + " count:" + count + " count*density: " + (count * density) + " totalChars: " + chars);
             if (pixelHeight > 120) {
                 double countPerPixel = count * START_DENSITY / (pixelHeight * pixelWidth);
-                Logger.trace(" " + countPerPixel);
+                //Logger.trace(" " + countPerPixel);
                 double totalPixels = chars / countPerPixel;
-                Logger.trace("Total pixels needed:" + totalPixels);
+                //Logger.trace("Total pixels needed:" + totalPixels);
                 while(pixelHeight *pixelWidth < totalPixels){
                     pixelHeight++;
                     pixelWidth =(int) (pixelHeight * ratio);
@@ -84,7 +83,7 @@ public class TextShapeProvider implements  ICharProvider {
         }
 
 
-        Logger.trace("Recommended dimension is: " + pixelHeight + "x" + pixelWidth);
+        //Logger.trace("Recommended dimension is: " + pixelHeight + "x" + pixelWidth);
 
         return new Dimension(pixelHeight, pixelWidth);
 
@@ -129,14 +128,14 @@ public class TextShapeProvider implements  ICharProvider {
     }
 
     public boolean attemptToMap(Boolean[][] map,  double density){
-        Logger.info("Attempting to map");
+        //Logger.info("Attempting to map");
         TextManager tm = textManager;
 
 
 
 
         ArrayList<Mapping> mappings = convertToMappings(map);
-        //Logger.trace(mappings.size() + " Mappings found");
+        ////Logger.trace(mappings.size() + " Mappings found");
         double placed = 0;
         double spaceUsed = 0;
         int totalSpace = 0;
@@ -150,13 +149,13 @@ public class TextShapeProvider implements  ICharProvider {
             double totalSpaceLeft = totalSpace - spaceUsed;
             TextManager thisSpaceManager = new TextManager();
             int remainingSpace = mapping.getSize();
-            //Logger.trace("New mapping: " + placed + " / " + spaceUsed + "=" + (placed/spaceUsed) + ". Remaining space:" + remainingSpace + ". Remaining ratio: " + totalTextLeft/totalSpaceLeft  + " TotalSpaceLeft: " + totalSpaceLeft + " TotalTextLeft " + totalTextLeft + " islast:" +mapping.isLast() + " " + textManager.peek());
+            ////Logger.trace("New mapping: " + placed + " / " + spaceUsed + "=" + (placed/spaceUsed) + ". Remaining space:" + remainingSpace + ". Remaining ratio: " + totalTextLeft/totalSpaceLeft  + " TotalSpaceLeft: " + totalSpaceLeft + " TotalTextLeft " + totalTextLeft + " islast:" +mapping.isLast() + " " + textManager.peek());
             //System.out.printf("ROW: %.3f/%.3f",placed/spaceUsed, totalTextLeft/totalSpaceLeft);
 
             while ( ((placed / (spaceUsed) < (totalTextLeft/totalSpaceLeft) ) || mapping.isLast()) && textManager.notEmpty() && thisSpaceManager.getLength() < mapping.getSize() -1 ){
                 //System.out.printf("%.3f/%.3f",placed/spaceUsed, totalTextLeft/totalSpaceLeft);
                 //while (placed / spaceUsed < density && textManager.notEmpty() && remainingSpace > 0 && ((totalTextLeft/totalSpaceLeft > (density -.02) ) || totalTextLeft < totalText * .05 )){
-                //Logger.trace(placed + " / " + spaceUsed + "=" + (placed/spaceUsed) + ". Remaining space:" + remainingSpace + ". Remaining ratio: " + totalTextLeft/totalSpaceLeft  + " TotalSpaceLeft: " + totalSpaceLeft + " TotalTextLeft " + totalTextLeft + " islast:" +mapping.isLast() + " " + textManager.peek());
+                ////Logger.trace(placed + " / " + spaceUsed + "=" + (placed/spaceUsed) + ". Remaining space:" + remainingSpace + ". Remaining ratio: " + totalTextLeft/totalSpaceLeft  + " TotalSpaceLeft: " + totalSpaceLeft + " TotalTextLeft " + totalTextLeft + " islast:" +mapping.isLast() + " " + textManager.peek());
 
                 //if (totalTextLeft > totalSpaceLeft) return false;
 
@@ -181,7 +180,7 @@ public class TextShapeProvider implements  ICharProvider {
             }
             //System.out.println();
             Boolean bool = (placed / (spaceUsed) < (totalTextLeft/totalSpaceLeft) );
-            //Logger.trace("Ended trying to map current: " + Boolean.toString(bool) + " " + mapping.isLast() + " " + textManager.notEmpty() + " " + (remainingSpace > 0));
+            ////Logger.trace("Ended trying to map current: " + Boolean.toString(bool) + " " + mapping.isLast() + " " + textManager.notEmpty() + " " + (remainingSpace > 0));
 
             // Space the words properly.
             thisSpaceManager.fitToLength(mapping.getSize()+1);
@@ -200,10 +199,10 @@ public class TextShapeProvider implements  ICharProvider {
 
 
         if (textManager.notEmpty()) {
-            Logger.debug("MAPPING FAILED with density " + density);
+            //Logger.debug("MAPPING FAILED with density " + density);
             return false;
         }
-        Logger.info("Mapping succeeded");
+        //Logger.info("Mapping succeeded");
         return true;
     }
 

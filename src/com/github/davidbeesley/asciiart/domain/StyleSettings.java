@@ -2,19 +2,17 @@ package com.github.davidbeesley.asciiart.domain;
 
 import com.github.davidbeesley.asciiart.util.FontWrapper;
 import com.github.davidbeesley.asciiart.util.ImageType;
-import com.github.davidbeesley.asciiart.util.Padding;
 
 import java.awt.*;
 
 public class StyleSettings {
-    private double density;
+    private double density = 0;
     private FontWrapper font;
     private Color foregroundColor, backgroundColor;
-    private Padding padding;
+    private int padding;
     private ImageType imageType;
 
-    public StyleSettings(double density, FontWrapper font, Color foregroundColor, Color backgroundColor, Padding padding, ImageType imageType) {
-        this.density = density;
+    public StyleSettings(FontWrapper font, Color foregroundColor, Color backgroundColor, int padding, ImageType imageType) {
         this.font = font;
         this.foregroundColor = foregroundColor;
         this.backgroundColor = backgroundColor;
@@ -42,11 +40,15 @@ public class StyleSettings {
         return backgroundColor;
     }
 
-    public Padding getPadding() {
+    public int getPadding() {
         return padding;
     }
 
     public ImageType getImageType() {
         return imageType;
+    }
+
+    public double getFontHeightToWidth(){
+        return 2.0; // todo!!!
     }
 }

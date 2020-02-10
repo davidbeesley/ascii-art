@@ -1,7 +1,6 @@
 package provider.color;
 
 import util.AnsiColor;
-import util.ColorVectorUtil;
 
 import java.awt.*;
 

@@ -1,6 +1,7 @@
-package util;
+package com.github.davidbeesley.asciiart.util;
 
-import loggerOLD.Logger;
+
+import com.github.davidbeesley.asciiart.util.logger.Logger;
 
 import java.awt.*;
 
@@ -15,7 +16,7 @@ public class ColorVectorUtil {
 
     private static double angle(Integer[] a, Integer[] b){
         if (a.length != b.length){
-            Logger.error("logic error");
+            Logger.getInstance().error("logic error");
             System.exit(1);
         }
 

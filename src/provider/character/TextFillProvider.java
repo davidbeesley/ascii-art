@@ -1,7 +1,7 @@
 package provider.character;
 
 import art.Canvas;
-import loggerOLD.Logger;
+import com.github.davidbeesley.asciiart.util.logger.Logger;
 
 import java.awt.*;
 import java.util.Set;
@@ -32,7 +32,7 @@ public class TextFillProvider implements  ICharProvider{
     public char getChar(Color color, int height, int width) {
         int index = height * pixelWidth + width;
         if (index >= text.length()){
-            Logger.error("Logic error");
+            Logger.getInstance().error("Logic error");
             System.exit(1);
         }
         return text.charAt(index);

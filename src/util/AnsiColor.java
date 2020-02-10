@@ -1,5 +1,7 @@
 package util;
 
+import com.github.davidbeesley.asciiart.util.ColorVectorUtil;
+
 import java.awt.*;
 
 public class AnsiColor {

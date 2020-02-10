@@ -61,7 +61,7 @@ public class Logger {
 
         System.out.print(className + ":" + stackTraceElements[loggerIndex].getMethodName() + "():\t");
         System.out.println(message);
-        System.out.println();
+        //System.out.println();
         semaphore.release();
 
         return true;
