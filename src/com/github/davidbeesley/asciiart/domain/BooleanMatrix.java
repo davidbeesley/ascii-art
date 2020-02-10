@@ -51,4 +51,19 @@ public class BooleanMatrix {
         }
         return s.toString();
     }
+
+    public String toNoSpaceRepresentation() {
+        StringBuilder s = new StringBuilder();
+        for (int y = 0; y < dim.getHeight(); y++){
+            for (int x = 0; x < dim.getWidth(); x ++){
+                if (getPoint(x,y)){
+                    s.append('X');
+                } else {
+                    s.append('_');
+                }
+            }
+            s.append('\n');
+        }
+        return s.toString();
+    }
 }

@@ -20,7 +20,7 @@ public class MapTextToShape {
         this.engine = engine;
     }
 
-    public ImageWrapper make(){
+public ImageWrapper make(){
         BooleanMatrix initialBooleanMatrix = engine.imageToBooleanMatrix(imageWrapper, imageProcessorSettings);
         BooleanMatrix debugMatrix = engine.scaleBooleanMatrix(initialBooleanMatrix, new Dimension(20,40));
         Logger.getInstance().debug("Boolean Silhouette:\n"+debugMatrix);
@@ -30,25 +30,25 @@ public class MapTextToShape {
         double density = .995;
         Dimension dimension = null;
         while (succeeded == false){
-            Logger.getInstance().info("Attempting to map with density " + density);
-            styleSettings.setDensity(density);
-            dimension = engine.getRecommendedDimensions(initialBooleanMatrix, styleSettings, tokens);
-            BooleanMatrix scaledMatrix = engine.scaleBooleanMatrix(initialBooleanMatrix, dimension);
-            //Logger.getInstance().debug("\n" + scaledMatrix);
+        Logger.getInstance().info("Attempting to map with density " + density);
+        styleSettings.setDensity(density);
+        dimension = engine.getRecommendedDimensions(initialBooleanMatrix, styleSettings, tokens);
+        BooleanMatrix scaledMatrix = engine.scaleBooleanMatrix(initialBooleanMatrix, dimension);
+        //Logger.getInstance().debug("\n" + scaledMatrix);
 
-            MappedSequenceList textList = engine.createMappedTextList(scaledMatrix, density);
-            //Logger.getInstance().debug("\n" + textList);
-            Logger.getInstance().debug("Necessary chars " + tokens.getCharacterCount() + " available chars " + textList.getTotalCapacity());
-            succeeded = engine.mapText(textList, tokens);
-            density -= .005;
-            if (density < .5){
-                Logger.getInstance().error("Mapping failed.");
-                System.exit(1);
-            }
+        MappedSequenceList textList = engine.createMappedTextList(scaledMatrix, density);
+        //Logger.getInstance().debug("\n" + textList);
+        Logger.getInstance().debug("Necessary chars " + tokens.getCharacterCount() + " available chars " + textList.getTotalCapacity());
+        succeeded = engine.mapText(textList, tokens);
+        density -= .005;
+        if (density < .5){
+        Logger.getInstance().error("Mapping failed.");
+        System.exit(1);
+        }
         }
         Logger.getInstance().info("Mapping succeeded with density " + density);
         MappedSequenceList mappedText = engine.retrieveMappedText();
         AsciiMatrix asciiMatrix = engine.convertToMatrix(mappedText, dimension);
         return engine.convertToImage(asciiMatrix, styleSettings);
-    }
-}
+        }
+        }

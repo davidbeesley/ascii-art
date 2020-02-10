@@ -1,7 +1,6 @@
 package com.github.davidbeesley.asciiart.exec;
 
-import art.BooleanCanvas;
-import art.Canvas;
+
 import com.github.davidbeesley.asciiart.domain.ImageProcessorSettings;
 import com.github.davidbeesley.asciiart.domain.ImageWrapper;
 import com.github.davidbeesley.asciiart.domain.StyleSettings;
@@ -16,20 +15,10 @@ import org.eoti.awt.WebColor;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import provider.character.ICharProvider;
-import provider.character.TextManager;
-import provider.character.TextShapeProvider;
-import provider.color.SingleColorProvider;
-import provider.font.FontProvider;
-import provider.pixel.BooleanPixelProvider;
-import provider.pixel.PixelProvider;
 import com.github.davidbeesley.asciiart.util.Util;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 @Command(description = "Ascii Art generator", name = "AsciiArt", mixinStandardHelpOptions = true, version = "AsciiArt 2.0")
@@ -129,7 +118,6 @@ public class AsciiArt implements Callable<Integer> {
         }
         // Font
         font =  new Font(fontString, fontType, fontSize);
-        FontWrapper fontWrapper = new FontWrapper(font);
         switch (outputType){
             case PNG:
                 outputExtension = "png";
@@ -140,12 +128,11 @@ public class AsciiArt implements Callable<Integer> {
         }
 
 
-        StyleSettings styleSettings = new StyleSettings(fontWrapper, foregroundColor, backgroundColor, border, outputType);
         switch (alg){
 
             case fonts:
-                FontProvider.printFonts();
-                break;
+                ListFonts.printFonts();
+                return 0;
 
 
             case sample:
@@ -154,34 +141,15 @@ public class AsciiArt implements Callable<Integer> {
                     return 0;
                 }
 
-                sample();
-                break;
+                return sample();
+
 
             case map:
-                Logger.getInstance().trace("Mapping");
-                if (imageFile == null){
-                    System.out.println("map requires option '--image=<FILE>'");
-                    return 0;
-                }
-                if (textFile == null){
-                    System.out.println("map requires option '--text=<FILE>'");
-                    return 0;
-                }
-                // output file
-                if (outFile == null){
-                    outFile =  new File(Util.stripExtension(imageFile.getName()) + "." + outputExtension);
-                }
-                ImageWrapper imageWrapper = new ImageWrapper(Util.readImage(imageFile));
-                ImageProcessorSettings imageProcessorSettings = new ImageProcessorSettings(matcherColor, matchAngle, invert);
-                TextSource textSource = new TextSource(textFile);
-                MapTextToShape mapTextToShape = new MapTextToShape(new Engine(), styleSettings, imageProcessorSettings, textSource, imageWrapper);
-                ImageWrapper output = mapTextToShape.make();
-                Util.writeImage(output.getBufferedImage(), outFile, outputType.toString());
-                break;
+                return map();
 
             case colors:
-                color();
-                break;
+                return colors();
+
         }
 
 
@@ -195,70 +163,48 @@ public class AsciiArt implements Callable<Integer> {
 
 
 
-    private void sample(){
-        BufferedImage source = Util.readImage(imageFile);
-        if (dim == null){
-            Dimension dim1 = Canvas.getRecommendedDimension(source);
-            int h = dim1.getHeight();
-            int w = dim1.getWidth();
-            while(h > 25 || w > 50){
-                h = (int) (h*.9);
-                w = (int) (w*.9);
-            }
-            dim = new Dimension(h,w);
+    private int sample(){
+        Logger.getInstance().trace("Sampling");
+        if (imageFile == null){
+            System.out.println("sample requires option '--image=<FILE>'");
+            return 0;
         }
-
-        for (double d : BooleanPixelProvider.getSampleAngles()) {
-
-
-            System.out.println("\n\n\nImage: " +imageFile.getName() + " angle: " + d);
-            BooleanPixelProvider booleanPixelProvider = new BooleanPixelProvider(d);
-            booleanPixelProvider.addMatcher(matcherColor);
-            BooleanCanvas booleanCanvas = new BooleanCanvas(source, dim);
-            Boolean[][] map = booleanCanvas.generateBooleanMap(booleanPixelProvider);
-            booleanCanvas.printMap();
-        }
+        ImageWrapper imageWrapper = new ImageWrapper(Util.readImage(imageFile));
+        SampleAngleSizes sampleAngleSizes = new SampleAngleSizes(new Engine(), matcherColor, imageWrapper, invert);
+        sampleAngleSizes.make();
+        return 0;
     }
 
-    private void silo(){
-        BufferedImage source = Util.readImage(imageFile);
-        if (dim == null){
-            dim = Canvas.getRecommendedDimension(source);
+    private int map(){
+        Logger.getInstance().trace("Mapping");
+        if (imageFile == null){
+            System.out.println("map requires option '--image=<FILE>'");
+            return 0;
         }
-
-
-        TextManager textManager = new TextManager(textFile);
-        PixelProvider pixelProvider = new PixelProvider(font, textManager.getCharSet());
-        Set<Color> matchers = new HashSet<>();
-        matchers.add(matcherColor);
-        BooleanPixelProvider booleanPixelProvider = new BooleanPixelProvider(matchAngle, invert, matchers);
-
-        Dimension dim = TextShapeProvider.getRecommendedDimension(source, textManager, booleanPixelProvider, pixelProvider.getHeightToWidth());
-        BooleanCanvas booleanCanvas = new BooleanCanvas(source, dim);
-        Boolean[][] map = booleanCanvas.generateBooleanMap(booleanPixelProvider);
-        //booleanCanvas.printDoubles();
-        //BooleanCanvas.printMap(map);
-
-        ICharProvider charProvider =  new TextShapeProvider(map, textManager);
-
-
-
-        Canvas canvas = new Canvas(source, dim);
-        canvas.addBorder(border);
-        canvas.setCharProvider(charProvider);
-        canvas.setColorProvider(new SingleColorProvider(foregroundColor));
-        canvas.setBackground(backgroundColor);
-        //canvas.printToConsole();
-
-        BufferedImage image = canvas.generateASCII(pixelProvider);
-        Util.writeImage(image, outFile, outputExtension);
+        if (textFile == null){
+            System.out.println("map requires option '--text=<FILE>'");
+            return 0;
+        }
+        // output file
+        if (outFile == null){
+            outFile =  new File(Util.stripExtension(imageFile.getName()) + "." + outputExtension);
+        }
+        FontWrapper fontWrapper = new FontWrapper(font);
+        StyleSettings styleSettings = new StyleSettings(fontWrapper, foregroundColor, backgroundColor, border, outputType);
+        ImageWrapper imageWrapper = new ImageWrapper(Util.readImage(imageFile));
+        ImageProcessorSettings imageProcessorSettings = new ImageProcessorSettings(matcherColor, matchAngle, invert);
+        TextSource textSource = new TextSource(textFile);
+        MapTextToShape mapTextToShape = new MapTextToShape(new Engine(), styleSettings, imageProcessorSettings, textSource, imageWrapper);
+        ImageWrapper output = mapTextToShape.make();
+        Util.writeImage(output.getBufferedImage(), outFile, outputType.toString());
+        return 0;
     }
 
-
-    private void color(){
+    private int colors(){
         for (WebColor c: WebColor.values()){
             System.out.println(c);
         }
+        return 0;
     }
 
 
