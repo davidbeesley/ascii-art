@@ -137,10 +137,12 @@ public class Engine implements EngineInterface {
 
         g2d.setRenderingHints(RenderingProperties);
 
-        g2d.setBackground(settings.getBackgroundColor());
+        //g2d.setBackground(settings.getBackgroundColor());
+        g2d.setColor(settings.getBackgroundColor());
+        g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
         g2d.setColor(settings.getForegroundColor());
 
-        g2d.clearRect(0, 0, img.getWidth(), img.getHeight());
+        //g2d.clearRect(0, 0, img.getWidth(), img.getHeight());
 
         g2d.setFont(settings.getFont().getFont());
 

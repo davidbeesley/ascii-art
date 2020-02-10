@@ -26,7 +26,7 @@ public class SampleAngleSizes {
         for (double d = 0.0; d < 1.5; d += .125)
         {
             BooleanMatrix initialBooleanMatrix = engine.imageToBooleanMatrix(imageWrapper, new ImageProcessorSettings(matcherColor, d, inverse));
-            BooleanMatrix debugMatrix = engine.scaleBooleanMatrix(initialBooleanMatrix, new Dimension(20, 40));
+            BooleanMatrix debugMatrix = engine.scaleBooleanMatrix(initialBooleanMatrix, new Dimension(20, 50));
             System.out.println("Angle " + d + "\n" + debugMatrix.toNoSpaceRepresentation());
         }
 
