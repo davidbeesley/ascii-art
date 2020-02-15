@@ -1,6 +1,6 @@
-# ascii-art
+# Text to Silhouette Converter
 
-Java Text to Silhouette Converter
+
 Image-processing techniques and complex data-structures that intelligently map text into shapes.
 
 
