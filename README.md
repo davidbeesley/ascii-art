@@ -1,7 +1,7 @@
 # ascii-art
 
-Map a text file uniformly to a silhouette. Does not break works across lines or gaps.
-Requires an input image and text file. Outputs an image.
+Java Text to Silhouette Converter
+Image-processing techniques and complex data-structures that intelligently map text into shapes.
 
 
 
